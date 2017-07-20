@@ -11,4 +11,10 @@ RSpec.describe Grid do
     expect(size).to eq(3)
   end
 
+  it "creates array of 9 cells for grid of size 3 initially set as nil" do
+    grid_cells = grid.create_cells
+
+    expect(grid_cells).to eq([nil, nil, nil, nil, nil, nil, nil, nil, nil])
+  end
+
 end
