@@ -27,6 +27,19 @@ RSpec.describe Grid do
     expect(grid_cell).to eq("X")
   end
 
+  it "places second mark on grid if it's empty" do
+    mark = "X"
+    grid_position = "3"
+    grid.place_mark(grid_position, mark)
+
+    mark2 = "O"
+    grid_position = "6"
+    grid.place_mark(grid_position, mark2)
+
+    grid_cell = grid.cells[5]
+    expect(grid_cell).to eq("O")
+  end
+
   it "returns :already_occupied if cell is already occupied" do
     mark = "X"
     grid_position = "3"
@@ -37,6 +50,22 @@ RSpec.describe Grid do
     result = grid.place_mark(grid_position, mark2)
 
     expect(result).to eq(:already_occupied)
+  end
+
+  it "displays list of numbers for correspondent empty cells" do
+    cells_display = grid.grid_display
+
+    expect(cells_display).to eq(["1", "2", "3", "4", "5", "6", "7", "8", "9"])
+  end
+
+  it "displays list of numbers for correspondent empty cells and of placed marks" do
+    mark = "X"
+    grid_position = "3"
+    grid.place_mark(grid_position, mark)
+
+    cells_display = grid.grid_display
+
+    expect(cells_display).to eq(["1", "2", "X", "4", "5", "6", "7", "8", "9"])
   end
 
 end

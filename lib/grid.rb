@@ -4,11 +4,11 @@ attr_reader :size, :cells
 
   def initialize(size)
     @size = size
-    @cells = []
+    @cells = create_cells
   end
 
   def create_cells
-    @cells = (0..grid_dimension-1).map {|cell| cell = nil}
+    Array.new(grid_dimension)
   end
 
   def place_mark(grid_position, mark)
@@ -18,6 +18,11 @@ attr_reader :size, :cells
     else
       :already_occupied
     end
+  end
+
+  def grid_display
+    grid_numbers = (1..grid_dimension).map {|number| number.to_s}
+    @cells.map.with_index { |cell, index| cell.nil? ? grid_numbers[index] : cell }
   end
 
   private
