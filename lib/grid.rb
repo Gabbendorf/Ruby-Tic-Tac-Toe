@@ -20,9 +20,10 @@ attr_reader :size, :cells
     end
   end
 
-  def grid_display
-    grid_numbers = (1..grid_dimension).map {|number| number.to_s}
-    @cells.map.with_index { |cell, index| cell.nil? ? grid_numbers[index] : cell }
+  def prepare_grid
+    grid_numbers = (1..grid_dimension).map {|number| number}
+    cells = @cells.map.with_index { |cell, index| cell.nil? ? grid_numbers[index] : cell }
+    cells.each_slice(@size).to_a
   end
 
   private
