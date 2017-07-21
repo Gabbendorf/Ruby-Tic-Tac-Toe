@@ -21,7 +21,7 @@ attr_reader :size, :cells
   end
 
   def prepare_grid
-    grid_numbers = (1..grid_dimension).map {|number| number}
+    grid_numbers = (1..grid_dimension).map {|number| number.to_s}
     filled_cells = @cells.map.with_index { |cell, index| cell.nil? ? grid_numbers[index] : cell }
     filled_cells.each_slice(@size).to_a
   end

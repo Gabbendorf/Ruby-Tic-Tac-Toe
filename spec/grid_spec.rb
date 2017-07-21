@@ -55,7 +55,7 @@ RSpec.describe Grid do
   it "prepares array of arrays of numbers for correspondent empty cells" do
     cells_display = grid.prepare_grid
 
-    expect(cells_display).to eq([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+    expect(cells_display).to eq([["1", "2", "3"], ["4", "5", "6"], ["7", "8", "9"]])
   end
 
   it "prepares array of arrays of numbers for correspondent empty cells and of placed marks if there are any" do
@@ -65,7 +65,7 @@ RSpec.describe Grid do
 
     cells_display = grid.prepare_grid
 
-    expect(cells_display).to eq([[1, 2, :X], [4, 5, 6], [7, 8, 9]])
+    expect(cells_display).to eq([["1", "2", :X], ["4", "5", "6"], ["7", "8", "9"]])
   end
 
   it "returns true if game ends because someone wins" do
