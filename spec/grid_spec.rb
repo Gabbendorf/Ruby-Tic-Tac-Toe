@@ -11,10 +11,8 @@ RSpec.describe Grid do
     expect(size).to eq(3)
   end
 
-  it "creates array of 9 cells for grid of size 3 initially set as nil" do
-    grid_cells = grid.create_cells
-
-    expect(grid_cells).to eq([nil, nil, nil, nil, nil, nil, nil, nil, nil])
+  it "is initialized with size by size cells number initially set as nil" do
+    expect(grid.cells).to eq([nil, nil, nil, nil, nil, nil, nil, nil, nil])
   end
 
   it "places mark on grid if it's empty" do
@@ -66,6 +64,24 @@ RSpec.describe Grid do
     cells_display = grid.prepare_grid
 
     expect(cells_display).to eq([["1", "2", :X], ["4", "5", "6"], ["7", "8", "9"]])
+  end
+
+  it "returns true if cell is empty" do
+    position = "3"
+
+    expect(grid.empty_position?(position)).to eq(true)
+  end
+
+  it "returns false if cell is occupied" do
+    grid.place_mark("3", :X)
+
+    position = "3"
+
+    expect(grid.empty_position?(position)).to eq(false)
+  end
+
+  it "returns list of available numbers for grid" do
+    expect(grid.available_numbers).to eq(["1", "2", "3", "4", "5", "6", "7", "8", "9"])
   end
 
   it "returns true if game ends because someone wins" do

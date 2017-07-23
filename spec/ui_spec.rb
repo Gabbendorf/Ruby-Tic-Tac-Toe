@@ -16,8 +16,7 @@ RSpec.describe Ui do
   end
 
   it "asks to choose opponent" do
-    input = StringIO.new("H")
-    ui = Ui.new(input, output)
+    ui = Ui.new(StringIO.new("H"), output)
 
     opponent = ui.choose_opponent
 
@@ -26,8 +25,7 @@ RSpec.describe Ui do
   end
 
   it "asks again to choose opponent if opponent choice input is wrong" do
-    input = StringIO.new("human\nh")
-    ui = Ui.new(input, output)
+    ui = Ui.new(StringIO.new("human\nh"), output)
 
     opponent = ui.choose_opponent
 
@@ -36,8 +34,7 @@ RSpec.describe Ui do
   end
 
   it "asks to make move" do
-    input = StringIO.new("1")
-    ui = Ui.new(input, output)
+    ui = Ui.new(StringIO.new("1"), output)
 
     opponent = ui.ask_for_move(grid)
 
@@ -46,12 +43,20 @@ RSpec.describe Ui do
   end
 
   it "asks to make move again if input is wrong" do
-    input = StringIO.new("11\n1")
-    ui = Ui.new(input, output)
+    ui = Ui.new(StringIO.new("11\n1"), output)
 
     opponent = ui.ask_for_move(grid)
 
     expect(output.string).to include("Move not valid, please repeat your move:")
+    expect(opponent).to eq("1")
+  end
+
+  it "asks to make move again if position is already occupied" do
+    ui = Ui.new(StringIO.new("1"), output)
+
+    opponent = ui.ask_for_empty_position
+
+    expect(output.string).to include("Position already occupied, please move again:")
     expect(opponent).to eq("1")
   end
 

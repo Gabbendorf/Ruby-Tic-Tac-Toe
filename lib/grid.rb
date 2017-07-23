@@ -7,13 +7,9 @@ attr_reader :size, :cells
     @cells = create_cells
   end
 
-  def create_cells
-    Array.new(grid_dimension)
-  end
-
   def place_mark(grid_position, mark)
-    cell_number = grid_position.to_i - 1
-    if cell_empty?(cell_number)
+    if empty_position?(grid_position)
+      cell_number = grid_position.to_i - 1
       @cells[cell_number] = mark
     else
       :already_occupied
@@ -26,11 +22,24 @@ attr_reader :size, :cells
     filled_cells.each_slice(@size).to_a
   end
 
+  def empty_position?(grid_position)
+    cell_number = grid_position.to_i - 1
+    @cells[cell_number] == nil
+  end
+
+  def available_numbers
+    (1..grid_dimension).map {|number| number.to_s}
+  end
+
   def end_game?
     won? || draw?
   end
 
   private
+
+  def create_cells
+    Array.new(grid_dimension)
+  end
 
   def rows
     @cells.map.each_slice(@size).to_a
@@ -38,10 +47,6 @@ attr_reader :size, :cells
 
   def grid_dimension
     @size * @size
-  end
-
-  def cell_empty?(cell_number)
-    @cells[cell_number] == nil
   end
 
   def first_diagonal_row
@@ -56,7 +61,7 @@ attr_reader :size, :cells
 
   def second_diagonal_row
     second_diagonal_row = []
-    index = @size-1
+    index = @size - 1
     rows.each do |row|
       second_diagonal_row.push(row[index])
       index -= 1

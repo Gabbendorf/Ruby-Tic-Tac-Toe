@@ -24,11 +24,15 @@ class Ui
   def ask_for_move(grid)
     @stdout.puts "Make your move:"
     move = @stdin.gets.chomp
-    grid_cell_numbers = grid.prepare_grid.flatten
-    while !grid_cell_numbers.include?(move)
+    while !grid.available_numbers.include?(move)
       move = repeat_move
     end
     move
+  end
+
+  def ask_for_empty_position
+    @stdout.puts "Position already occupied, please move again:"
+    @stdin.gets.chomp
   end
 
   private
