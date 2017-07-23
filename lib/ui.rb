@@ -6,10 +6,10 @@ class Ui
   end
 
   def print_grid(grid)
-    grid.prepare_grid[0..-2].each do |array|
+    grid.grid_display[0..-2].each do |array|
       @stdout.puts array.join("  |  ") << "\n_____________"
     end
-    @stdout.puts grid.prepare_grid.last.join("  |  ")
+    @stdout.puts grid.grid_display.last.join("  |  ")
   end
 
   def choose_opponent
@@ -24,7 +24,7 @@ class Ui
   def ask_for_move(grid)
     @stdout.puts "Make your move:"
     move = @stdin.gets.chomp
-    while !grid.available_numbers.include?(move)
+    while !grid.grid_numbers.include?(move)
       move = repeat_move
     end
     move

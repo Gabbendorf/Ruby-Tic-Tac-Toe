@@ -11,11 +11,11 @@ RSpec.describe Grid do
     expect(size).to eq(3)
   end
 
-  it "is initialized with size by size cells number initially set as nil" do
+  it "is initialized with cells number corresponding to size by size number initially set as nil" do
     expect(grid.cells).to eq([nil, nil, nil, nil, nil, nil, nil, nil, nil])
   end
 
-  it "places mark on grid if it's empty" do
+  it "places mark on grid" do
     mark = :X
     grid_position = "3"
 
@@ -25,7 +25,7 @@ RSpec.describe Grid do
     expect(grid_cell).to eq(:X)
   end
 
-  it "places second mark on grid if it's empty" do
+  it "places second mark on grid" do
     mark = :X
     grid_position = "3"
     grid.place_mark(grid_position, mark)
@@ -38,20 +38,8 @@ RSpec.describe Grid do
     expect(grid_cells).to eq([nil, nil, :X, nil, nil, :O, nil, nil, nil])
   end
 
-  it "returns :already_occupied if cell is already occupied by mark" do
-    mark = :X
-    grid_position = "3"
-    grid.place_mark(grid_position, mark)
-
-    mark2 = :O
-    grid_position = "3"
-    result = grid.place_mark(grid_position, mark2)
-
-    expect(result).to eq(:already_occupied)
-  end
-
   it "prepares array of arrays of numbers for correspondent empty cells" do
-    cells_display = grid.prepare_grid
+    cells_display = grid.grid_display
 
     expect(cells_display).to eq([["1", "2", "3"], ["4", "5", "6"], ["7", "8", "9"]])
   end
@@ -61,7 +49,7 @@ RSpec.describe Grid do
     grid_position = "3"
     grid.place_mark(grid_position, mark)
 
-    cells_display = grid.prepare_grid
+    cells_display = grid.grid_display
 
     expect(cells_display).to eq([["1", "2", :X], ["4", "5", "6"], ["7", "8", "9"]])
   end
@@ -81,7 +69,7 @@ RSpec.describe Grid do
   end
 
   it "returns list of available numbers for grid" do
-    expect(grid.available_numbers).to eq(["1", "2", "3", "4", "5", "6", "7", "8", "9"])
+    expect(grid.grid_numbers).to eq(["1", "2", "3", "4", "5", "6", "7", "8", "9"])
   end
 
   it "returns true if game ends because someone wins" do
