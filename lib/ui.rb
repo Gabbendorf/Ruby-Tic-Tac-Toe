@@ -39,7 +39,7 @@ class Ui
 
   def repeat_opponent_choice
     @stdout.puts "Sorry, I didn't understand: h --> human player, c --> computer"
-    @stdin.gets.chomp
+    @stdin.gets.chomp.downcase
   end
 
   def repeat_move
