@@ -18,6 +18,15 @@ class Game
     switch_players
   end
 
+  def report_verdict
+    if @grid.verdict == :winner
+      mark = @grid.winning_mark
+      @ui.declare_winner(mark)
+    else
+      @ui.declare_draw
+    end
+  end
+
   private
 
   def opponent

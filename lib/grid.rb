@@ -8,7 +8,7 @@ attr_reader :size, :cells
   end
 
   def place_mark(chosen_position, mark)
-    @cells[corresponding_cell_number(chosen_position)] = mark
+    @cells[corresponding_cell_number_for(chosen_position)] = mark
   end
 
   def grid_display
@@ -18,7 +18,7 @@ attr_reader :size, :cells
   end
 
   def empty_position?(grid_position)
-    @cells[corresponding_cell_number(grid_position)] == nil
+    @cells[corresponding_cell_number_for(grid_position)] == nil
   end
 
   def grid_numbers
@@ -29,61 +29,60 @@ attr_reader :size, :cells
     won? || draw?
   end
 
+  def verdict
+    won? ? :winner : :draw
+  end
+
+  def winning_mark
+    winning_row.flatten.first
+  end
+
   private
 
   def create_cells
     Array.new(grid_dimension)
   end
 
-  def rows
-    @cells.map.each_slice(@size).to_a
-  end
-
   def grid_dimension
     @size * @size
   end
 
-  def corresponding_cell_number(grid_position)
+  def all_rows
+    [horizontal_rows, vertical_rows, first_diagonal_row, second_diagonal_row]
+  end
+
+  def horizontal_rows
+    @cells.map.each_slice(@size).to_a
+  end
+
+  def vertical_rows
+    @cells.map.each_slice(@size).to_a.transpose
+  end
+
+  def corresponding_cell_number_for(grid_position)
     grid_position.to_i - 1
   end
 
   def won?
-    horizontal_winning_row? || vertical_winning_row? || diagonal_winning_row?
+    !winning_row.empty?
   end
 
   def draw?
-    full? && no_winning_rows?
+    all_cells_full? && !won?
   end
 
-  def full?
+  def all_cells_full?
     @cells.all? {|cell| cell != nil}
   end
 
-  def no_winning_rows?
-    !horizontal_winning_row? || !vertical_winning_row? || !diagonal_winning_row?
-  end
-
-  def horizontal_winning_row?
-    !winning_row(rows).empty?
-  end
-
-  def vertical_winning_row?
-    !winning_row(rows.transpose).empty?
-  end
-
-  def diagonal_winning_row?
-    diagonal_rows = [first_diagonal_row, second_diagonal_row]
-    !winning_row(diagonal_rows).empty?
-  end
-
-  def winning_row(rows)
-    rows.select {|row| row.uniq.size == 1 && row.uniq.first != nil}
+  def winning_row
+    all_rows.select {|row| row.uniq.size == 1 && row.uniq.first != nil}
   end
 
   def first_diagonal_row
     first_diagonal_row = []
     index = 0
-    rows.each do |row|
+    horizontal_rows.each do |row|
       first_diagonal_row.push(row[index])
       index += 1
     end
@@ -93,7 +92,7 @@ attr_reader :size, :cells
   def second_diagonal_row
     second_diagonal_row = []
     index = @size - 1
-    rows.each do |row|
+    horizontal_rows.each do |row|
       second_diagonal_row.push(row[index])
       index -= 1
     end

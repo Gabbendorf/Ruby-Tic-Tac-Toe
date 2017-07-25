@@ -60,4 +60,18 @@ RSpec.describe Ui do
     expect(opponent).to eq("1")
   end
 
+  it "declares a winner" do
+    winning_mark = "X"
+
+    ui.declare_winner(winning_mark)
+
+    expect(output.string).to eq("Player X wins!\n")
+  end
+
+  it "declares it's draw" do
+    ui.declare_draw
+
+    expect(output.string).to eq("It's a draw: nobody wins!\n")
+  end
+
 end

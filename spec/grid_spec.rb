@@ -68,38 +68,78 @@ RSpec.describe Grid do
     expect(grid.empty_position?(position)).to eq(false)
   end
 
-  it "returns list of available numbers for grid" do
+  it "returns list of available grid numbers for user" do
     expect(grid.grid_numbers).to eq(["1", "2", "3", "4", "5", "6", "7", "8", "9"])
   end
 
-  it "returns true if game ends because someone wins" do
+  describe "knows when game finishes" do
+    it "returns true if game ends because someone wins" do
+      grid.place_mark("3", :X)
+      grid.place_mark("5", :X)
+      grid.place_mark("7", :X)
+
+      expect(grid.end_game?).to eq(true)
+    end
+
+    it "returns true if game ends and it's draw" do
+      grid.place_mark("3", :X)
+      grid.place_mark("2", :O)
+      grid.place_mark("5", :X)
+      grid.place_mark("1", :O)
+      grid.place_mark("4", :X)
+      grid.place_mark("7", :O)
+      grid.place_mark("8", :X)
+      grid.place_mark("6", :O)
+      grid.place_mark("9", :X)
+
+      expect(grid.end_game?).to eq(true)
+    end
+
+    it "returns false if game is not finished" do
+      grid.place_mark("1", :X)
+      grid.place_mark("2", :O)
+      grid.place_mark("3", :X)
+
+      expect(grid.end_game?).to eq(false)
+    end
+  end
+
+  describe "knows if it's draw or there's winner" do
+    it "returns :winner if someone wins" do
+      grid.place_mark("3", :X)
+      grid.place_mark("5", :X)
+      grid.place_mark("7", :X)
+
+      verdict_declaration = grid.verdict
+
+      expect(verdict_declaration).to eq(:winner)
+    end
+
+    it "returns :draw if nobody wins" do
+      grid.place_mark("3", :X)
+      grid.place_mark("2", :O)
+      grid.place_mark("5", :X)
+      grid.place_mark("1", :O)
+      grid.place_mark("4", :X)
+      grid.place_mark("7", :O)
+      grid.place_mark("8", :X)
+      grid.place_mark("6", :O)
+      grid.place_mark("9", :X)
+
+      verdict_declaration = grid.verdict
+
+      expect(verdict_declaration).to eq(:draw)
+    end
+  end
+
+  it "returns winning mark" do
     grid.place_mark("3", :X)
     grid.place_mark("5", :X)
     grid.place_mark("7", :X)
 
-    expect(grid.end_game?).to eq(true)
-  end
+    winning_mark = grid.winning_mark
 
-  it "returns true if game ends and it's draw" do
-    grid.place_mark("1", :X)
-    grid.place_mark("2", :O)
-    grid.place_mark("3", :X)
-    grid.place_mark("4", :O)
-    grid.place_mark("5", :X)
-    grid.place_mark("6", :O)
-    grid.place_mark("8", :X)
-    grid.place_mark("7", :O)
-    grid.place_mark("9", :X)
-
-    expect(grid.end_game?).to eq(true)
-  end
-
-  it "returns false if game is not finished" do
-    grid.place_mark("1", :X)
-    grid.place_mark("2", :O)
-    grid.place_mark("3", :X)
-
-    expect(grid.end_game?).to eq(false)
+    expect(winning_mark).to eq(:X)
   end
 
 end

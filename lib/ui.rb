@@ -35,6 +35,14 @@ class Ui
     @stdin.gets.chomp
   end
 
+  def declare_winner(player_mark)
+    @stdout.puts "Player #{player_mark} wins!"
+  end
+
+  def declare_draw
+    @stdout.puts "It's a draw: nobody wins!"
+  end
+
   private
 
   def repeat_opponent_choice
