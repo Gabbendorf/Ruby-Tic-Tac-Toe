@@ -50,17 +50,19 @@ RSpec.describe Ui do
 
   it "asks to make move" do
     ui = Ui.new(StringIO.new("1"), output)
+    player_mark = "X"
 
-    opponent = ui.ask_for_move(grid)
+    opponent = ui.ask_for_move(grid, player_mark)
 
-    expect(output.string).to include("Make your move:")
+    expect(output.string).to include("Player X, make your move:")
     expect(opponent).to eq("1")
   end
 
   it "asks to make move again if input is wrong" do
     ui = Ui.new(StringIO.new("11\n1"), output)
+    player_mark = "X"
 
-    opponent = ui.ask_for_move(grid)
+    opponent = ui.ask_for_move(grid, player_mark)
 
     expect(output.string).to include("Move not valid, please repeat your move:")
     expect(opponent).to eq("1")

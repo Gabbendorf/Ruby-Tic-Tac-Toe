@@ -25,6 +25,7 @@ class Ui
       @stdout.puts array.join("  |  ") << "\n_____________"
     end
     @stdout.puts grid.grid_display.last.join("  |  ")
+    @stdout.puts "\n"
   end
 
   def choose_opponent
@@ -36,8 +37,8 @@ class Ui
     opponent_choice
   end
 
-  def ask_for_move(grid)
-    @stdout.puts "Make your move:"
+  def ask_for_move(grid, player_mark)
+    @stdout.puts "Player #{player_mark}, make your move:"
     move = @stdin.gets.chomp
     while !grid.grid_numbers.include?(move)
       move = repeat_move

@@ -27,8 +27,8 @@ class Game
 
   def make_move(current_player, players)
     show_grid_state
-    move = current_player.make_move
     mark = mark(current_player, players)
+    move = current_player.make_move(mark)
     @grid.place_mark(move, mark)
   end
 
