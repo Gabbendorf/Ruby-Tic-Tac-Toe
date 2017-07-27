@@ -1,5 +1,5 @@
 class TicTacToe
 
-  
+
 
 end

@@ -2,7 +2,6 @@ require 'spec_helper'
 require_relative '../lib/game'
 require_relative '../lib/ui'
 require_relative '../lib/grid'
-require_relative '../lib/human_player'
 
 RSpec.describe Game do
 
@@ -11,17 +10,10 @@ RSpec.describe Game do
   let(:input) {StringIO.new("h\n3")}
   let(:ui) {Ui.new(input, output)}
   let(:game) {Game.new(ui, grid)}
-  let(:human_player) {HumanPlayer.new(ui, grid)}
-
-  def set_up_game_for_different_inputs(grid, input, output)
-    ui = Ui.new(input, output)
-    Game.new(ui, grid)
-  end
 
   it "creates the players and assigns them mark" do
     player_input_for_computer = "c"
-    input = StringIO.new(player_input_for_computer)
-    ui = Ui.new(input, output)
+    ui = Ui.new(StringIO.new(player_input_for_computer), output)
     game = Game.new(ui, grid)
 
     players = game.players_and_marks
@@ -67,7 +59,9 @@ RSpec.describe Game do
 
   it "declares winner" do
     grid = double("grid")
-    game = set_up_game_for_different_inputs(grid, StringIO.new("h\n1"), output)
+    output = StringIO.new
+    ui = Ui.new(StringIO.new, output)
+    game = Game.new(ui, grid)
 
     expect(grid).to receive(:verdict) {:winner}
     expect(grid).to receive(:winning_mark) { "X" }
@@ -78,7 +72,9 @@ RSpec.describe Game do
 
   it "declares it's draw" do
     grid = double("grid")
-    game = set_up_game_for_different_inputs(grid, StringIO.new("h\n1"), output)
+    output = StringIO.new
+    ui = Ui.new(StringIO.new, output)
+    game = Game.new(ui, grid)
 
     expect(grid).to receive(:verdict) {:draw}
 
