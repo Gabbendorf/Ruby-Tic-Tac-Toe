@@ -48,7 +48,7 @@ attr_reader :size, :cells
   end
 
   def all_rows
-    [horizontal_rows, vertical_rows, first_diagonal_row, second_diagonal_row]
+    [horizontal_rows, vertical_rows, diagonal_rows].flatten(1)
   end
 
   def horizontal_rows
@@ -57,6 +57,10 @@ attr_reader :size, :cells
 
   def vertical_rows
     @cells.map.each_slice(@size).to_a.transpose
+  end
+
+  def diagonal_rows
+    [first_diagonal_row, second_diagonal_row]
   end
 
   def corresponding_cell_number_for(grid_position)
