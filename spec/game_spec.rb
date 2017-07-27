@@ -9,14 +9,15 @@ RSpec.describe Game do
   let(:output) {StringIO.new}
   let(:input) {StringIO.new("h\n3")}
   let(:ui) {Ui.new(input, output)}
-  let(:game) {Game.new(ui, grid)}
+  let(:game) {Game.new(grid)}
+  let(:first_player) {HumanPlayer.new(ui, grid)}
 
-  it "creates the players and assigns them mark" do
+  it "returns hash with players and their marks" do
     player_input_for_computer = "c"
     ui = Ui.new(StringIO.new(player_input_for_computer), output)
-    game = Game.new(ui, grid)
+    game = Game.new(grid)
 
-    players = game.players_and_marks
+    players = game.players_and_marks(first_player, ui)
     first_player = players[:first_player][:player]
     first_player_mark = players[:first_player][:mark]
     second_player = players[:second_player][:player]
@@ -50,7 +51,7 @@ RSpec.describe Game do
   end
 
   it "gets move from current player and registers corresponding mark on grid" do
-    players = game.players_and_marks
+    players = game.players_and_marks(first_player, ui)
     current_player = game.starter(players)
 
     game.make_move(current_player, players)
@@ -59,47 +60,14 @@ RSpec.describe Game do
     expect(grid_state).to eq([nil, nil, "X", nil, nil, nil, nil, nil, nil])
   end
 
-  it "declares winner and asks to play again" do
-    grid = double("grid")
-    output = StringIO.new
-    ui = Ui.new(StringIO.new("y"), output)
-    game = Game.new(ui, grid)
-    expect(grid).to receive(:verdict) {:winner}
-    expect(grid).to receive(:winning_mark) { "X" }
-
-    game.end_of_game_actions
-
-    expect(output.string).to include("Player X wins!")
-    expect(output.string).to include("Do you want to play again? y --> yes, n --> quit")
-  end
-
-  it "declares it's draw and asks to play again" do
-    grid = double("grid")
-    output = StringIO.new
-    ui = Ui.new(StringIO.new("y"), output)
-    game = Game.new(ui, grid)
-    expect(grid).to receive(:verdict) {:draw}
-
-    game.end_of_game_actions
-
-    expect(output.string).to include("It's a draw: nobody wins!")
-    expect(output.string).to include("Do you want to play again? y --> yes, n --> quit")
-  end
-
   it "alternates mark type to start game" do
     players = {:first_player => {:player => "human player", :mark => "X"},
                :second_player => {:player => "computer", :mark => "O"}}
     first_starter = "human player"
 
-    next_starter = game.change_starter_for_next_game(first_starter, players)
+    next_starter = game.starter_for_new_game(first_starter, players)
 
     expect(next_starter).to eq("computer")
-  end
-
-  it "says goodbye and exits the program" do
-    game.exit_game
-
-    expect(output.string).to include("See you soon!")
   end
 
 end

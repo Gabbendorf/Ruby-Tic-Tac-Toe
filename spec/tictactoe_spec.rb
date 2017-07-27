@@ -14,8 +14,8 @@ RSpec.describe TicTacToe do
     it "runs a game between two human players" do
       input = StringIO.new("h\n3\n2\n5\n1\n4\n7\n8\n6\n9\nn")
       ui = Ui.new(input, output)
-      game = Game.new(ui, grid)
-      new_game = TicTacToe.new(grid, game)
+      game = Game.new(grid)
+      new_game = TicTacToe.new(ui, grid, game)
 
       new_game.run
 
@@ -30,8 +30,8 @@ RSpec.describe TicTacToe do
       second_game_inputs = "h\n3\n2\n5\n1\n4\n7\n8\n6\n9\nn"
       input = StringIO.new(first_game_inputs + second_game_inputs)
       ui = Ui.new(input, output)
-      game = Game.new(ui, grid)
-      new_game = TicTacToe.new(grid, game)
+      game = Game.new(grid)
+      new_game = TicTacToe.new(ui, grid, game)
 
       new_game.run
 
