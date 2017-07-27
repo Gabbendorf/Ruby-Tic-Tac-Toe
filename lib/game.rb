@@ -6,6 +6,7 @@ class Game
   def initialize(ui, grid)
     @ui = ui
     @grid = grid
+    @intro = welcome_players
   end
 
   def players_and_marks
@@ -41,6 +42,11 @@ class Game
   end
 
   private
+
+  def welcome_players
+    @ui.welcome
+    @ui.print_logo
+  end
 
   def first_player(players)
     players[:first_player][:type]

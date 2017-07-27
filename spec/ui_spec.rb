@@ -9,6 +9,21 @@ RSpec.describe Ui do
   let(:ui) {Ui.new(input, output)}
   let(:grid) {Grid.new(3)}
 
+  it "welcomes players" do
+    ui.welcome
+
+    expect(output.string).to include("Welcome to...")
+  end
+
+  it "prints the game logo" do
+    output = double("output")
+    ui = Ui.new(input, output)
+
+    expect(output).to receive(:puts).with(Ui::LOGO)
+
+    ui.print_logo
+  end
+
   it "prints the grid" do
     ui.print_grid(grid)
 

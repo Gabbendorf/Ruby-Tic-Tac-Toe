@@ -5,6 +5,21 @@ class Ui
     @stdout = stdout
   end
 
+  LOGO = %q!
+  __  __  _____ ___ ___   _____ _   ___   _____ ___  ___     ___
+  \ \/ / |_   _|_ _/ __| |_   _/_\ / __| |_   _/ _ \| __|   / _ \
+   >  <    | |  | | (__    | |/ _ \ (__    | || (_) | _|   | (_) |
+  /_/\_\   |_| |___\___|   |_/_/ \_\___|   |_| \___/|___|   \___/
+  !
+
+  def welcome
+    @stdout.puts "Welcome to..."
+  end
+
+  def print_logo
+    @stdout.puts LOGO
+  end
+
   def print_grid(grid)
     grid.grid_display[0..-2].each do |array|
       @stdout.puts array.join("  |  ") << "\n_____________"
