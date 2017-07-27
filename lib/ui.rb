@@ -12,6 +12,8 @@ class Ui
   /_/\_\   |_| |___\___|   |_/_/ \_\___|   |_| \___/|___|   \___/
   !
 
+  NEW_LINE = "\n"
+
   def welcome
     @stdout.puts "Welcome to..."
   end
@@ -25,7 +27,7 @@ class Ui
       @stdout.puts array.join("  |  ") << "\n_____________"
     end
     @stdout.puts grid.grid_display.last.join("  |  ")
-    @stdout.puts "\n"
+    @stdout.puts NEW_LINE
   end
 
   def choose_opponent
@@ -52,11 +54,26 @@ class Ui
   end
 
   def declare_winner(player_mark)
-    @stdout.puts "Player #{player_mark} wins!"
+    @stdout.puts "Player #{player_mark} wins!\n"
+    @stdout.puts NEW_LINE
   end
 
   def declare_draw
     @stdout.puts "It's a draw: nobody wins!"
+    @stdout.puts NEW_LINE
+  end
+
+  def ask_to_play_again
+    @stdout.puts "Do you want to play again? y --> yes, n --> quit"
+    answer = @stdin.gets.chomp.downcase
+    while answer != "y" && answer != "n"
+      answer = repeat_answer
+    end
+    answer
+  end
+
+  def say_goodbye
+    @stdout.puts "See you soon!"
   end
 
   private
@@ -69,6 +86,11 @@ class Ui
   def repeat_move
     @stdout.puts "Move not valid, please repeat your move:"
     @stdin.gets.chomp
+  end
+
+  def repeat_answer
+    @stdout.puts "Sorry, I didn't understand: y --> yes, n --> quit"
+    @stdin.gets.chomp.downcase
   end
 
 end

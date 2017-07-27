@@ -5,6 +5,24 @@ RSpec.describe Grid do
 
   let(:grid) {Grid.new(3)}
 
+  def draw_game
+    grid.place_mark("3", "X")
+    grid.place_mark("2", "O")
+    grid.place_mark("5", "X")
+    grid.place_mark("1", "O")
+    grid.place_mark("4", "X")
+    grid.place_mark("7", "O")
+    grid.place_mark("8", "X")
+    grid.place_mark("6", "O")
+    grid.place_mark("9", "X")
+  end
+
+  def game_with_winner
+    grid.place_mark("3", :X)
+    grid.place_mark("5", :X)
+    grid.place_mark("7", :X)
+  end
+
   it "is initialized with a size" do
     size = grid.size
 
@@ -12,30 +30,32 @@ RSpec.describe Grid do
   end
 
   it "is initialized with cells number corresponding to size by size number initially set as nil" do
-    expect(grid.cells).to eq([nil, nil, nil, nil, nil, nil, nil, nil, nil])
+    grid_cells = grid.cells
+
+    expect(grid_cells).to eq([nil, nil, nil, nil, nil, nil, nil, nil, nil])
   end
 
   it "places mark on grid" do
-    mark = :X
+    mark = "X"
     grid_position = "3"
 
     grid.place_mark(grid_position, mark)
 
     grid_cell = grid.cells[2]
-    expect(grid_cell).to eq(:X)
+    expect(grid_cell).to eq("X")
   end
 
   it "places second mark on grid" do
-    mark = :X
+    mark = "X"
     grid_position = "3"
     grid.place_mark(grid_position, mark)
 
-    mark2 = :O
+    mark2 = "O"
     grid_position = "6"
     grid.place_mark(grid_position, mark2)
 
     grid_cells = grid.cells
-    expect(grid_cells).to eq([nil, nil, :X, nil, nil, :O, nil, nil, nil])
+    expect(grid_cells).to eq([nil, nil, "X", nil, nil, "O", nil, nil, nil])
   end
 
   it "prepares array of arrays of numbers for correspondent empty cells" do
@@ -45,13 +65,13 @@ RSpec.describe Grid do
   end
 
   it "prepares array of arrays of numbers for correspondent empty cells and of placed marks if there are any" do
-    mark = :X
+    mark = "X"
     grid_position = "3"
     grid.place_mark(grid_position, mark)
 
     cells_display = grid.grid_display
 
-    expect(cells_display).to eq([["1", "2", :X], ["4", "5", "6"], ["7", "8", "9"]])
+    expect(cells_display).to eq([["1", "2", "X"], ["4", "5", "6"], ["7", "8", "9"]])
   end
 
   it "returns true if cell is empty" do
@@ -61,7 +81,7 @@ RSpec.describe Grid do
   end
 
   it "returns false if cell is occupied" do
-    grid.place_mark("3", :X)
+    grid.place_mark("3", "X")
 
     position = "3"
 
@@ -74,31 +94,21 @@ RSpec.describe Grid do
 
   describe "knows when game finishes" do
     it "returns true if game ends because someone wins" do
-      grid.place_mark("3", :X)
-      grid.place_mark("5", :X)
-      grid.place_mark("7", :X)
+      game_with_winner
 
       expect(grid.end_game?).to eq(true)
     end
 
     it "returns true if game ends and it's draw" do
-      grid.place_mark("3", :X)
-      grid.place_mark("2", :O)
-      grid.place_mark("5", :X)
-      grid.place_mark("1", :O)
-      grid.place_mark("4", :X)
-      grid.place_mark("7", :O)
-      grid.place_mark("8", :X)
-      grid.place_mark("6", :O)
-      grid.place_mark("9", :X)
+      draw_game
 
       expect(grid.end_game?).to eq(true)
     end
 
     it "returns false if game is not finished" do
-      grid.place_mark("1", :X)
-      grid.place_mark("2", :O)
-      grid.place_mark("3", :X)
+      grid.place_mark("1", "X")
+      grid.place_mark("2", "O")
+      grid.place_mark("3", "X")
 
       expect(grid.end_game?).to eq(false)
     end
@@ -106,9 +116,7 @@ RSpec.describe Grid do
 
   describe "knows if it's draw or there's winner" do
     it "returns :winner if someone wins" do
-      grid.place_mark("3", :X)
-      grid.place_mark("5", :X)
-      grid.place_mark("7", :X)
+      game_with_winner
 
       verdict_declaration = grid.verdict
 
@@ -116,15 +124,7 @@ RSpec.describe Grid do
     end
 
     it "returns :draw if nobody wins" do
-      grid.place_mark("3", :X)
-      grid.place_mark("2", :O)
-      grid.place_mark("5", :X)
-      grid.place_mark("1", :O)
-      grid.place_mark("4", :X)
-      grid.place_mark("7", :O)
-      grid.place_mark("8", :X)
-      grid.place_mark("6", :O)
-      grid.place_mark("9", :X)
+      draw_game
 
       verdict_declaration = grid.verdict
 
@@ -133,13 +133,19 @@ RSpec.describe Grid do
   end
 
   it "returns winning mark" do
-    grid.place_mark("3", :X)
-    grid.place_mark("5", :X)
-    grid.place_mark("7", :X)
+    game_with_winner
 
     winning_mark = grid.winning_mark
 
     expect(winning_mark).to eq(:X)
+  end
+
+  it "sets all cells to nil for new game" do
+    draw_game
+
+    grid.reset_cells
+
+    expect(grid.cells).to eq([nil, nil, nil, nil, nil, nil, nil, nil, nil])
   end
 
 end

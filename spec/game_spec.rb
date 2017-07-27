@@ -17,9 +17,9 @@ RSpec.describe Game do
     game = Game.new(ui, grid)
 
     players = game.players_and_marks
-    first_player = players[:first_player][:type]
+    first_player = players[:first_player][:player]
     first_player_mark = players[:first_player][:mark]
-    second_player = players[:second_player][:type]
+    second_player = players[:second_player][:player]
     second_player_mark = players[:second_player][:mark]
 
     expect(first_player).to be_kind_of(HumanPlayer)
@@ -29,7 +29,8 @@ RSpec.describe Game do
   end
 
   it "returns starter" do
-    players = {:first_player => {:type => "human player", :mark => "X"}, :second_player => {:type => "computer", :mark => "O"}}
+    players = {:first_player => {:player => "human player", :mark => "X"},
+               :second_player => {:player => "computer", :mark => "O"}}
 
     starter = game.starter(players)
 
@@ -37,7 +38,8 @@ RSpec.describe Game do
   end
 
   it "switches player" do
-    players = {:first_player => {:type => "human player", :mark => "X"}, :second_player => {:type => "computer", :mark => "O"}}
+    players = {:first_player => {:player => "human player", :mark => "X"},
+               :second_player => {:player => "computer", :mark => "O"}}
     starter = game.starter(players)
 
     switched_player = game.switch_player(starter, players)
@@ -57,29 +59,47 @@ RSpec.describe Game do
     expect(grid_state).to eq([nil, nil, "X", nil, nil, nil, nil, nil, nil])
   end
 
-  it "declares winner" do
+  it "declares winner and asks to play again" do
     grid = double("grid")
     output = StringIO.new
-    ui = Ui.new(StringIO.new, output)
+    ui = Ui.new(StringIO.new("y"), output)
     game = Game.new(ui, grid)
-
     expect(grid).to receive(:verdict) {:winner}
     expect(grid).to receive(:winning_mark) { "X" }
 
-    game.report_verdict
+    game.end_of_game_actions
+
     expect(output.string).to include("Player X wins!")
+    expect(output.string).to include("Do you want to play again? y --> yes, n --> quit")
   end
 
-  it "declares it's draw" do
+  it "declares it's draw and asks to play again" do
     grid = double("grid")
     output = StringIO.new
-    ui = Ui.new(StringIO.new, output)
+    ui = Ui.new(StringIO.new("y"), output)
     game = Game.new(ui, grid)
-
     expect(grid).to receive(:verdict) {:draw}
 
-    game.report_verdict
+    game.end_of_game_actions
+
     expect(output.string).to include("It's a draw: nobody wins!")
+    expect(output.string).to include("Do you want to play again? y --> yes, n --> quit")
+  end
+
+  it "alternates mark type to start game" do
+    players = {:first_player => {:player => "human player", :mark => "X"},
+               :second_player => {:player => "computer", :mark => "O"}}
+    first_starter = "human player"
+
+    next_starter = game.change_starter_for_next_game(first_starter, players)
+
+    expect(next_starter).to eq("computer")
+  end
+
+  it "says goodbye and exits the program" do
+    game.exit_game
+
+    expect(output.string).to include("See you soon!")
   end
 
 end

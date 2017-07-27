@@ -7,12 +7,13 @@ class Game
     @ui = ui
     @grid = grid
     @intro = welcome_players
+    @first_player = HumanPlayer.new(@ui, @grid)
   end
 
   def players_and_marks
-    {:first_player => {:type => HumanPlayer.new(@ui, @grid),
+    {:first_player => {:player => @first_player,
                        :mark => "X"},
-    :second_player => {:type => opponent,
+    :second_player => {:player => opponent,
                        :mark => "O"}
     }
   end
@@ -22,23 +23,35 @@ class Game
   end
 
   def switch_player(current_player, players)
-    current_player == first_player(players) ? players[:second_player][:type] : first_player(players)
+    current_player == first_player(players) ? second_player(players) : first_player(players)
   end
 
   def make_move(current_player, players)
-    show_grid_state
     mark = mark(current_player, players)
     move = current_player.make_move(mark)
     @grid.place_mark(move, mark)
   end
 
-  def report_verdict
+  def end_of_game_actions
     if @grid.verdict == :winner
-      mark = @grid.winning_mark
-      @ui.declare_winner(mark)
+      @ui.declare_winner(@grid.winning_mark)
+      ask_to_play_again
     else
       @ui.declare_draw
+      ask_to_play_again
     end
+  end
+
+  def change_starter_for_next_game(current_starter, players)
+    if current_starter == first_player(players)
+      second_player(players)
+    else
+      first_player(players)
+    end
+  end
+
+  def exit_game
+    @ui.say_goodbye
   end
 
   private
@@ -49,7 +62,11 @@ class Game
   end
 
   def first_player(players)
-    players[:first_player][:type]
+    players[:first_player][:player]
+  end
+
+  def second_player(players)
+    players[:second_player][:player]
   end
 
   def opponent
@@ -65,8 +82,8 @@ class Game
     end
   end
 
-  def show_grid_state
-    @ui.print_grid(@grid)
+  def ask_to_play_again
+    @ui.ask_to_play_again
   end
 
 end

@@ -37,6 +37,10 @@ attr_reader :size, :cells
     winning_row.flatten.first
   end
 
+  def reset_cells
+    @cells = create_cells
+  end
+
   private
 
   def create_cells
@@ -56,7 +60,7 @@ attr_reader :size, :cells
   end
 
   def vertical_rows
-    @cells.map.each_slice(@size).to_a.transpose
+    horizontal_rows.transpose
   end
 
   def diagonal_rows

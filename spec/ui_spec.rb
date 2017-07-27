@@ -44,7 +44,8 @@ RSpec.describe Ui do
 
     opponent = ui.choose_opponent
 
-    expect(output.string).to include("Choose your opponent: h --> human player, c --> computer\nSorry, I didn't understand: h --> human player, c --> computer")
+    expect(output.string).to include("Choose your opponent: h --> human player, c --> computer")
+    expect(output.string).to include("Sorry, I didn't understand: h --> human player, c --> computer")
     expect(opponent).to eq("h")
   end
 
@@ -82,13 +83,39 @@ RSpec.describe Ui do
 
     ui.declare_winner(winning_mark)
 
-    expect(output.string).to eq("Player X wins!\n")
+    expect(output.string).to eq("Player X wins!\n\n")
   end
 
   it "declares it's draw" do
     ui.declare_draw
 
-    expect(output.string).to eq("It's a draw: nobody wins!\n")
+    expect(output.string).to eq("It's a draw: nobody wins!\n\n")
+  end
+
+  it "asks to start new game" do
+    ui = Ui.new(StringIO.new("y"), output)
+
+    answer = ui.ask_to_play_again
+
+    expect(output.string).to include("Do you want to play again? y --> yes, n --> quit")
+    expect(answer).to eq("y")
+  end
+
+  it "asks to answer y or n again if input is wrong" do
+    ui = Ui.new(StringIO.new("g\ny"), output)
+
+    answer = ui.ask_to_play_again
+
+    expect(output.string).to include("Do you want to play again? y --> yes, n --> quit")
+    expect(output.string).to include("Sorry, I didn't understand: y --> yes, n --> quit")
+
+    expect(answer).to eq("y")
+  end
+
+  it "says goodbye" do
+    ui.say_goodbye
+
+    expect(output.string).to include("See you soon!")
   end
 
 end

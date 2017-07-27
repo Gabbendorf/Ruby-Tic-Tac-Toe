@@ -10,37 +10,35 @@ RSpec.describe TicTacToe do
   let(:output) {StringIO.new}
   let(:grid) {Grid.new(3)}
 
-  it "runs a game between two human players that's a draw" do
-    input = StringIO.new("h\n3\n2\n5\n1\n4\n7\n8\n6\n9")
-    ui = Ui.new(input, output)
-    game = Game.new(ui, grid)
-    new_game = TicTacToe.new(grid, game)
+  describe "runs just 1 game" do
+    it "runs a game between two human players" do
+      input = StringIO.new("h\n3\n2\n5\n1\n4\n7\n8\n6\n9\nn")
+      ui = Ui.new(input, output)
+      game = Game.new(ui, grid)
+      new_game = TicTacToe.new(grid, game)
 
-    new_game.run
+      new_game.run
 
-    expect(output.string).to include("It's a draw: nobody wins!")
+      expect(output.string).to include("It's a draw: nobody wins!")
+    end
+
   end
 
-  it "runs a game between two human players and player X wins" do
-    input = StringIO.new("h\n1\n4\n2\n5\n3")
-    ui = Ui.new(input, output)
-    game = Game.new(ui, grid)
-    new_game = TicTacToe.new(grid, game)
+  describe "runs 2 games in line" do
+    it "runs 2 games between two human players" do
+      first_game_inputs = "h\n1\n4\n2\n5\n3\ny\n"
+      second_game_inputs = "h\n3\n2\n5\n1\n4\n7\n8\n6\n9\nn"
+      input = StringIO.new(first_game_inputs + second_game_inputs)
+      ui = Ui.new(input, output)
+      game = Game.new(ui, grid)
+      new_game = TicTacToe.new(grid, game)
 
-    new_game.run
+      new_game.run
 
-    expect(output.string).to include("Player X wins!")
-  end
+      expect(output.string).to include("Player X wins!")
+      expect(output.string).to include("It's a draw: nobody wins!")
+    end
 
-  it "runs a game between two human players and player O wins" do
-    input = StringIO.new("h\n1\n4\n2\n5\n8\n6")
-    ui = Ui.new(input, output)
-    game = Game.new(ui, grid)
-    new_game = TicTacToe.new(grid, game)
-
-    new_game.run
-
-    expect(output.string).to include("Player O wins!")
   end
 
 end

@@ -7,8 +7,9 @@ class HumanPlayer
     @ui = ui
     @grid = grid
   end
-#could print the grid in first line instead of in game.make_move
+
   def make_move(player_mark)
+    @ui.print_grid(@grid)
     move = @ui.ask_for_move(@grid, player_mark)
     while !@grid.empty_position?(move)
       move = @ui.ask_for_empty_position
