@@ -19,21 +19,17 @@ class Game
   end
 
   def switch_player(current_player, players)
-    current_player == first_player(players) ? second_player(players) : first_player(players)
+    if current_player == first_player(players)
+      second_player(players)
+    else
+      first_player(players)
+    end
   end
 
   def make_move(current_player, players)
     mark = mark(current_player, players)
     move = current_player.make_move(mark)
     @grid.place_mark(move, mark)
-  end
-
-  def starter_for_new_game(current_starter, players)
-    if current_starter == first_player(players)
-      second_player(players)
-    else
-      first_player(players)
-    end
   end
 
   private

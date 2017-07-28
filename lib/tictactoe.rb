@@ -10,7 +10,7 @@ class TicTacToe
     @first_player = HumanPlayer.new(@ui, @grid)
     @players = @game.players_and_marks(@first_player, @ui)
     @current_player = @game.starter(@players)
-    @first_starter_player = @current_player
+    @first_starter = @current_player
   end
 
   def run
@@ -18,7 +18,6 @@ class TicTacToe
       @game.make_move(@current_player, @players)
       @current_player = @game.switch_player(@current_player, @players)
     end
-    @ui.print_grid(@grid)
     report_verdict
     play_again_or_quit
   end
@@ -31,6 +30,7 @@ class TicTacToe
   end
 
   def report_verdict
+    @ui.print_grid(@grid)
     if @grid.verdict == :winner
       @ui.declare_winner(@grid.winning_mark)
     else
@@ -39,19 +39,18 @@ class TicTacToe
   end
 
   def play_again_or_quit
-    answer_for_new_game = @ui.ask_to_play_again
-    if answer_for_new_game == "y"
+    if @ui.ask_to_play_again == "y"
       start_new_game
     else
       @ui.say_goodbye
     end
   end
-
+  #TODO: change way to alternate starter maybe?
   def start_new_game
     @grid.reset_cells
     @players = @game.players_and_marks(@first_player, @ui)
-    @current_player = @game.starter_for_new_game(@first_starter_player, @players)
-    @starter_player = @current_player
+    @current_player = @game.switch_player(@first_starter, @players)
+    @first_starter = @current_player
     run
   end
 

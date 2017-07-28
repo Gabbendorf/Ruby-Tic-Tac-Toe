@@ -65,7 +65,7 @@ RSpec.describe Game do
                :second_player => {:player => "computer", :mark => "O"}}
     first_starter = "human player"
 
-    next_starter = game.starter_for_new_game(first_starter, players)
+    next_starter = game.switch_player(first_starter, players)
 
     expect(next_starter).to eq("computer")
   end
