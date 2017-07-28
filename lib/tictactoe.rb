@@ -19,7 +19,7 @@ class TicTacToe
       @current_player = @game.switch_player(@current_player, @players)
     end
     report_verdict
-    play_again_or_quit
+    @ui.ask_to_play_again == "y" ? start_new_game : @ui.say_goodbye
   end
 
   private
@@ -38,13 +38,6 @@ class TicTacToe
     end
   end
 
-  def play_again_or_quit
-    if @ui.ask_to_play_again == "y"
-      start_new_game
-    else
-      @ui.say_goodbye
-    end
-  end
   #TODO: change way to alternate starter maybe?
   def start_new_game
     @grid.reset_cells
