@@ -148,4 +148,11 @@ RSpec.describe Grid do
     expect(grid.cells).to eq([nil, nil, nil, nil, nil, nil, nil, nil, nil])
   end
 
+  it "returns number of empty cells" do
+    grid.place_mark("3", "X")
+    grid.place_mark("5", "O")
+
+    expect(grid.empty_cells_number).to eq(7)
+  end
+
 end

@@ -10,7 +10,7 @@ attr_reader :size, :cells
   def place_mark(chosen_position, mark)
     @cells[corresponding_cell_number_for(chosen_position)] = mark
   end
-
+  # find different name for this method
   def grid_display
     filled_cells = @cells.map.with_index { |cell, index| cell.nil? ?
       grid_numbers[index] : cell }
@@ -39,6 +39,10 @@ attr_reader :size, :cells
 
   def reset_cells
     @cells = create_cells
+  end
+
+  def empty_cells_number
+    @cells.select {|cell| cell == nil}.size
   end
 
   private

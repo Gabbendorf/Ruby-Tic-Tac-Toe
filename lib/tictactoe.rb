@@ -10,7 +10,7 @@ class TicTacToe
     @first_player = HumanPlayer.new(@ui, @grid)
     @players = @game.players_and_marks(@first_player, @ui)
     @current_player = @game.starter(@players)
-    @first_starter = @current_player
+    @game_starter = @current_player
   end
 
   def run
@@ -42,8 +42,8 @@ class TicTacToe
   def start_new_game
     @grid.reset_cells
     @players = @game.players_and_marks(@first_player, @ui)
-    @current_player = @game.switch_player(@first_starter, @players)
-    @first_starter = @current_player
+    @current_player = @game.switch_player(@game_starter, @players)
+    @game_starter = @current_player
     run
   end
 
