@@ -41,7 +41,7 @@ attr_reader :size, :cells
     @cells = create_cells
   end
 
-  def duplicate_grid_state(cells)
+  def duplicated_grid_state(cells)
     empty_cells_number = cells.select {|cell| cell == nil}.size
     duplicated_grids = empty_cells_number.times.map {Grid.new(3)}
     set_cells_state_for(duplicated_grids, cells)

@@ -31,12 +31,18 @@ RSpec.describe UnbeatableComputer do
     expect(score).to eq(0)
   end
 
-  it "returns grid cells" do
+  it "returns duplicated grids each with current player mark placed in different empty cell" do
     grid.place_mark("3", "X")
+    grid.place_mark("5", "O")
+    grid.place_mark("6", "X")
+    possible_move = "X"
 
-    grid_cells = computer.cells
+    grids_with_moves = computer.grids_with_possible_moves(grid.cells, possible_move)
+    first_duplicated_grid = grids_with_moves[0]
+    sixth_duplicated_grid = grids_with_moves[5]
 
-    expect(grid_cells).to eq([nil, nil, "X", nil, nil, nil, nil, nil, nil])
+    expect(first_duplicated_grid.cells).to eq([possible_move, nil, "X", nil, "O", "X", nil, nil, nil])
+    expect(sixth_duplicated_grid.cells).to eq([nil, nil, "X", nil, "O", "X", nil, nil, possible_move])
   end
 
 end

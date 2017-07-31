@@ -151,8 +151,7 @@ RSpec.describe Grid do
   it "duplicates grid state as many times as number of empty cells in original grid" do
     grid.place_mark("3", "X")
     grid.place_mark("5", "O")
-
-    duplicated_grids = grid.duplicate_grid_state(grid.cells)
+    duplicated_grids = grid.duplicated_grid_state(grid.cells)
 
     first_duplicated_grid = duplicated_grids[0]
     second_duplicated_grid = duplicated_grids[1]
