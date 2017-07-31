@@ -148,11 +148,18 @@ RSpec.describe Grid do
     expect(grid.cells).to eq([nil, nil, nil, nil, nil, nil, nil, nil, nil])
   end
 
-  it "returns number of empty cells" do
+  it "duplicates grid state as many times as number of empty cells in original grid" do
     grid.place_mark("3", "X")
     grid.place_mark("5", "O")
 
-    expect(grid.empty_cells_number).to eq(7)
+    duplicated_grids = grid.duplicate_grid_state(grid.cells)
+
+    first_duplicated_grid = duplicated_grids[0]
+    second_duplicated_grid = duplicated_grids[1]
+
+    expect(first_duplicated_grid.cells).to eq(grid.cells)
+    expect(second_duplicated_grid.cells).to eq(grid.cells)
+    expect(duplicated_grids.size).to eq(7)
   end
 
 end

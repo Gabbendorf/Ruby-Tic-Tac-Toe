@@ -41,11 +41,20 @@ attr_reader :size, :cells
     @cells = create_cells
   end
 
-  def empty_cells_number
-    @cells.select {|cell| cell == nil}.size
+  def duplicate_grid_state(cells)
+    empty_cells_number = cells.select {|cell| cell == nil}.size
+    duplicated_grids = empty_cells_number.times.map {Grid.new(3)}
+    set_cells_state_for(duplicated_grids, cells)
   end
 
   private
+
+  def set_cells_state_for(duplicated_grids, cells)
+    duplicated_grids.each do |duplicated_grid|
+      duplicated_cells = cells.dup
+      duplicated_grid.instance_variable_set(:@cells, duplicated_cells)
+    end
+  end
 
   def create_cells
     Array.new(grid_dimension)

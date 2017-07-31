@@ -25,18 +25,4 @@ class UnbeatableComputer
     score
   end
 
-  def grid_state_duplications
-    @duplicated_grids = @grid.empty_cells_number.times.map {Grid.new(3)}
-    set_cells_state(@duplicated_grids)
-  end
-
-  private
-
-  def set_cells_state(duplicated_grids)
-    duplicated_grids.each do |grid|
-      duplicated_cells = @grid.cells.dup
-      grid.instance_variable_set(:@cells, duplicated_cells)
-    end
-  end
-
 end
