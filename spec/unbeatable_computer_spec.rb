@@ -32,43 +32,57 @@ RSpec.describe UnbeatableComputer do
     expect(computer.possible_moves_and_scores.size).to eq(9)
   end
 
-  it "adds 1 if current game state shows computer winning" do
-    grid.place_mark("1", "O")
-    grid.place_mark("2", "O")
-    grid.place_mark("3", "O")
-    initial_score = 1
+  describe "applies minimax algorithm to grid copy and updates score for each possible move according to result" do
+    it "adds 1 to score if hypotethical game ends and computer wins" do
+      computer_mark = "O"
+      grid.place_mark("1", computer_mark)
+      grid.place_mark("2", computer_mark)
+      computer.add_possible_moves_and_scores
+      ending_grid_state = computer.possible_moves_and_scores[1][:grid]
+      list_number = computer.possible_moves_and_scores.keys[0]
 
-    updated_score = computer.updated_score(grid, initial_score)
+      computer.minimax(ending_grid_state, list_number, computer_mark)
 
-    expect(updated_score).to eq(2)
-  end
+      score = computer.possible_moves_and_scores[1][:score]
+      expect(score).to eq(1)
+    end
 
-  it "subtracts 1 if current game state shows computer losing" do
-    grid.place_mark("1", "X")
-    grid.place_mark("2", "X")
-    grid.place_mark("3", "X")
-    initial_score = 1
+    it "subtracts 1 to score if hypotethical game ends and opponent wins" do
+      opponent_mark = "X"
+      grid.place_mark("1", opponent_mark)
+      grid.place_mark("2", opponent_mark)
+      grid.place_mark("4", opponent_mark)
+      grid.place_mark("5", opponent_mark)
+      grid.place_mark("9", opponent_mark)
+      computer.add_possible_moves_and_scores
+      ending_game_grid_state = computer.possible_moves_and_scores[1][:grid]
+      list_number = computer.possible_moves_and_scores.keys[0]
 
-    updated_score = computer.updated_score(grid, initial_score)
+      computer.minimax(ending_game_grid_state, list_number, opponent_mark)
 
-    expect(updated_score).to eq(0)
-  end
+      score = computer.possible_moves_and_scores[1][:score]
+      expect(score).to eq(-1)
+    end
 
-  it "doesn't add point if current game state shows draw state" do
-    grid.place_mark("3", "X")
-    grid.place_mark("2", "O")
-    grid.place_mark("5", "X")
-    grid.place_mark("1", "O")
-    grid.place_mark("4", "X")
-    grid.place_mark("7", "O")
-    grid.place_mark("8", "X")
-    grid.place_mark("6", "O")
-    grid.place_mark("9", "X")
-    initial_score = 1
+    it "doesn't change score if hypotethical game ends as draw" do
+      grid.place_mark("3", "X")
+      grid.place_mark("2", "O")
+      grid.place_mark("5", "X")
+      grid.place_mark("1", "O")
+      grid.place_mark("4", "X")
+      grid.place_mark("7", "O")
+      grid.place_mark("8", "X")
+      grid.place_mark("6", "O")
 
-    updated_score = computer.updated_score(grid, initial_score)
+      computer.add_possible_moves_and_scores
+      ending_game_grid_state = computer.possible_moves_and_scores[1][:grid]
+      list_number = computer.possible_moves_and_scores.keys[0]
 
-    expect(updated_score).to eq(1)
+      computer.minimax(ending_game_grid_state, list_number, "X")
+
+      score = computer.possible_moves_and_scores[1][:score]
+      expect(score).to eq(0)
+    end
   end
 
 end

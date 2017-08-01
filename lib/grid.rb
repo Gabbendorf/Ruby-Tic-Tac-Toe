@@ -33,6 +33,10 @@ attr_reader :size, :cells
     won? ? :winner : :draw
   end
 
+  def draw?
+    all_cells_full? && !won?
+  end
+
   def winning_mark
     winning_row.flatten.first
   end
@@ -47,7 +51,7 @@ attr_reader :size, :cells
     set_cells_state_for(duplicated_grids, cells)
   end
 
-  # private
+  private
 
   def set_cells_state_for(duplicated_grids, cells)
     duplicated_grids.each do |duplicated_grid|
@@ -86,10 +90,6 @@ attr_reader :size, :cells
 
   def won?
     !winning_row.empty?
-  end
-
-  def draw?
-    all_cells_full? && !won?
   end
 
   def all_cells_full?

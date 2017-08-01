@@ -13,14 +13,14 @@ class UnbeatableComputer
            :opponent => "X"
           }
 
-
-  def updated_score(duplicated_grid, score)
-    if duplicated_grid.winning_mark == MARKS[:computer]
-      score += 1
-    elsif duplicated_grid.winning_mark == MARKS[:opponent]
-      score -= 1
-    elsif duplicated_grid.draw?
-      score += 0
+  def minimax(duplicated_grid, list_number, player_mark)
+    if duplicated_grid.end_game?
+      update_score(duplicated_grid, list_number)
+    else
+      grid_copies = grid_copies_with_possible_moves(duplicated_grid.cells, current_mark(player_mark))
+      grid_copies.each do |grid_copy|
+        minimax(grid_copy, list_number, current_mark(player_mark))
+      end
     end
   end
 
@@ -50,6 +50,16 @@ class UnbeatableComputer
       MARKS[:opponent]
     else
       MARKS[:computer]
+    end
+  end
+
+  def update_score(duplicated_grid, list_number)
+    if duplicated_grid.winning_mark == MARKS[:computer]
+      @possible_moves_and_scores[list_number][:score] += 1
+    elsif duplicated_grid.winning_mark == MARKS[:opponent]
+      @possible_moves_and_scores[list_number][:score] -= 1
+    elsif duplicated_grid.draw?
+      @possible_moves_and_scores[list_number][:score] += 0
     end
   end
 
