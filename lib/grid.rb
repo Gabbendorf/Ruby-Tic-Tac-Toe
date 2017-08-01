@@ -47,7 +47,7 @@ attr_reader :size, :cells
     set_cells_state_for(duplicated_grids, cells)
   end
 
-  private
+  # private
 
   def set_cells_state_for(duplicated_grids, cells)
     duplicated_grids.each do |duplicated_grid|
