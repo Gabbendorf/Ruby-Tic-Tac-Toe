@@ -13,14 +13,11 @@ class UnbeatableComputer
            :opponent => "X"
           }
 
-  def minimax(duplicated_grid, list_number, player_mark)
+  def score(duplicated_grid, player_mark)
     if duplicated_grid.end_game?
-      update_score(duplicated_grid, list_number)
+      get_score(duplicated_grid)
     else
-      grid_copies = grid_copies_with_possible_moves(duplicated_grid.cells, current_mark(player_mark))
-      grid_copies.each do |grid_copy|
-        minimax(grid_copy, list_number, current_mark(player_mark))
-      end
+      predict_score_with_minimax(duplicated_grid, player_mark)
     end
   end
 
@@ -45,21 +42,37 @@ class UnbeatableComputer
 
   private
 
-  def current_mark(player_mark)
+  def get_score(duplicated_grid)
+    if duplicated_grid.winning_mark == MARKS[:computer]
+      10
+    elsif duplicated_grid.winning_mark == MARKS[:opponent]
+      -10
+    elsif duplicated_grid.draw?
+      0
+    end
+  end
+
+  def predict_score_with_minimax(duplicated_grid, player_mark)
+    moves_and_scores = {}
+    player_mark = switch_mark(player_mark)
+    grid_copies = grid_copies_with_possible_moves(duplicated_grid.cells, player_mark)
+    grid_copies.each {|grid_copy| moves_and_scores[grid_copy] = score(grid_copy, player_mark)}
+    min_or_max_value(player_mark, moves_and_scores)
+  end
+
+  def min_or_max_value(player_mark, moves_and_scores)
+    if player_mark == MARKS[:computer]
+      moves_and_scores.values.max
+    else
+      moves_and_scores.values.min
+    end
+  end
+
+  def switch_mark(player_mark)
     if player_mark == MARKS[:computer]
       MARKS[:opponent]
     else
       MARKS[:computer]
-    end
-  end
-
-  def update_score(duplicated_grid, list_number)
-    if duplicated_grid.winning_mark == MARKS[:computer]
-      @possible_moves_and_scores[list_number][:score] += 1
-    elsif duplicated_grid.winning_mark == MARKS[:opponent]
-      @possible_moves_and_scores[list_number][:score] -= 1
-    elsif duplicated_grid.draw?
-      @possible_moves_and_scores[list_number][:score] += 0
     end
   end
 

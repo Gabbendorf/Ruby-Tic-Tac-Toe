@@ -32,55 +32,82 @@ RSpec.describe UnbeatableComputer do
     expect(computer.possible_moves_and_scores.size).to eq(9)
   end
 
-  describe "applies minimax algorithm to grid copy and updates score for each possible move according to result" do
-    it "adds 1 to score if hypotethical game ends and computer wins" do
+  describe "returns score for possible move according to game result prediction after minimax application" do
+    it "returns 10 if possible move is winning move for computer and it's computer turn" do
       computer_mark = "O"
       grid.place_mark("1", computer_mark)
-      grid.place_mark("2", computer_mark)
-      computer.add_possible_moves_and_scores
-      ending_grid_state = computer.possible_moves_and_scores[1][:grid]
-      list_number = computer.possible_moves_and_scores.keys[0]
+      grid.place_mark("3", computer_mark)
+      possible_moves = computer.grid_copies_with_possible_moves(grid.cells, computer_mark)
+      computer_winning_move = possible_moves[0]
 
-      computer.minimax(ending_grid_state, list_number, computer_mark)
+      score = computer.score(computer_winning_move, computer_mark)
 
-      score = computer.possible_moves_and_scores[1][:score]
-      expect(score).to eq(1)
+      expect(score).to eq(10)
     end
 
-    it "subtracts 1 to score if hypotethical game ends and opponent wins" do
+    it "returns 10 if opponent doesn't prevent computer from winning in next game states" do
+      computer_mark = "O"
+      opponent_mark = "X"
+      grid.place_mark("1", computer_mark)
+      grid.place_mark("3", computer_mark)
+      possible_moves = computer.grid_copies_with_possible_moves(grid.cells, opponent_mark)
+      opponent_move_different_from_2 = possible_moves[4]
+
+      score = computer.score(opponent_move_different_from_2, computer_mark)
+
+      expect(score).to eq(10)
+    end
+
+    it "returns -10 if possible move is winning move for opponent and it's opponent turn" do
       opponent_mark = "X"
       grid.place_mark("1", opponent_mark)
       grid.place_mark("2", opponent_mark)
-      grid.place_mark("4", opponent_mark)
-      grid.place_mark("5", opponent_mark)
-      grid.place_mark("9", opponent_mark)
-      computer.add_possible_moves_and_scores
-      ending_game_grid_state = computer.possible_moves_and_scores[1][:grid]
-      list_number = computer.possible_moves_and_scores.keys[0]
+      possible_moves = computer.grid_copies_with_possible_moves(grid.cells, opponent_mark)
+      opponent_winning_move = possible_moves[1]
 
-      computer.minimax(ending_game_grid_state, list_number, opponent_mark)
+      score = computer.score(opponent_winning_move, opponent_mark)
 
-      score = computer.possible_moves_and_scores[1][:score]
-      expect(score).to eq(-1)
+      expect(score).to eq(-10)
     end
 
-    it "doesn't change score if hypotethical game ends as draw" do
-      grid.place_mark("3", "X")
-      grid.place_mark("2", "O")
-      grid.place_mark("5", "X")
-      grid.place_mark("1", "O")
-      grid.place_mark("4", "X")
-      grid.place_mark("7", "O")
-      grid.place_mark("8", "X")
-      grid.place_mark("6", "O")
+    it "returns -10 if computer doesn't prevent opponent from winning in next game state" do
+      opponent_mark = "X"
+      computer_mark = "O"
+      grid.place_mark("1", opponent_mark)
+      grid.place_mark("2", opponent_mark)
+      possible_moves = computer.grid_copies_with_possible_moves(grid.cells, computer_mark)
+      computer_move_different_from_3 = possible_moves[2]
 
-      computer.add_possible_moves_and_scores
-      ending_game_grid_state = computer.possible_moves_and_scores[1][:grid]
-      list_number = computer.possible_moves_and_scores.keys[0]
+      score = computer.score(computer_move_different_from_3, computer_mark)
 
-      computer.minimax(ending_game_grid_state, list_number, "X")
+      expect(score).to eq(-10)
+    end
 
-      score = computer.possible_moves_and_scores[1][:score]
+    it "returns 0 if possible move leads to end game which is draw" do
+      computer_mark = "O"
+      grid.place_mark("3", "O")
+      grid.place_mark("2", "X")
+      grid.place_mark("5", "O")
+      grid.place_mark("1", "X")
+      grid.place_mark("4", "O")
+      grid.place_mark("7", "X")
+      grid.place_mark("8", "O")
+      grid.place_mark("6", "X")
+      possible_moves = computer.grid_copies_with_possible_moves(grid.cells, computer_mark)
+      last_move_possible = possible_moves[0]
+
+      score = computer.score(last_move_possible, computer_mark)
+
+      expect(score).to eq(0)
+    end
+
+    it "returns 0 if in next level of game states nobody can win" do
+      computer_mark = "O"
+      possible_moves = computer.grid_copies_with_possible_moves(grid.cells, computer_mark)
+      first_move = possible_moves[0]
+
+      score = computer.score(first_move, computer_mark)
+
       expect(score).to eq(0)
     end
   end
