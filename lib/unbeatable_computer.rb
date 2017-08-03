@@ -13,19 +13,18 @@ class UnbeatableComputer
            :opponent => "X"
           }
 
+  def add_possible_moves_and_scores
+    possible_moves = grid_copies_with_possible_moves(@grid.cells, MARKS[:computer])
+    possible_moves.each do |possible_move|
+      @possible_moves_and_scores[possible_move] = score(possible_move, MARKS[:computer])
+    end
+  end
+
   def score(duplicated_grid, player_mark)
     if duplicated_grid.end_game?
       get_score(duplicated_grid)
     else
       predict_score_with_minimax(duplicated_grid, player_mark)
-    end
-  end
-
-  def add_possible_moves_and_scores
-    number = 1
-    grid_copies_with_possible_moves(@grid.cells, MARKS[:computer]).each do |possible_move|
-      @possible_moves_and_scores[number] = {:grid => possible_move, :score => 0}
-      number += 1
     end
   end
 

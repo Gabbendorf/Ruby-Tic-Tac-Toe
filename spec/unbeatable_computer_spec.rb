@@ -21,17 +21,6 @@ RSpec.describe UnbeatableComputer do
     expect(sixth_duplicated_grid.cells).to eq([nil, nil, "X", nil, "O", "X", nil, nil, possible_move])
   end
 
-  it "populates hash with ordered list of copies of grid with possible move and score" do
-    computer.add_possible_moves_and_scores
-
-    first_duplicated_grid = computer.possible_moves_and_scores.values[0][:grid]
-    first_score = computer.possible_moves_and_scores.values[0][:score]
-
-    expect(first_duplicated_grid).to be_kind_of(Grid)
-    expect(first_score).to eq(0)
-    expect(computer.possible_moves_and_scores.size).to eq(9)
-  end
-
   describe "returns score for possible move according to game result prediction after minimax application" do
     it "returns 10 if possible move is winning move for computer and it's computer turn" do
       computer_mark = "O"
@@ -110,6 +99,26 @@ RSpec.describe UnbeatableComputer do
 
       expect(score).to eq(0)
     end
+  end
+
+  it "populates hash with grid copies each with possible move and score" do
+    grid.place_mark("3", "O")
+    grid.place_mark("2", "X")
+    grid.place_mark("5", "O")
+    grid.place_mark("1", "X")
+    grid.place_mark("4", "O")
+    grid.place_mark("7", "X")
+    grid.place_mark("8", "O")
+    grid.place_mark("6", "X")
+    computer_mark = "O"
+    possible_scores = [-10, 0, 10]
+    computer.add_possible_moves_and_scores
+
+    last_possible_move = computer.possible_moves_and_scores.keys[0].cells.last
+    move_score = computer.possible_moves_and_scores.values[0]
+
+    expect(last_possible_move).to eq(computer_mark)
+    expect(possible_scores).to include(move_score)
   end
 
 end

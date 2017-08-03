@@ -44,12 +44,17 @@ attr_reader :size, :cells
   def reset_cells
     @cells = create_cells
   end
-
+  #Try with not passing cells as argument (see below)
   def duplicated_grid_state(cells)
     empty_cells_number = cells.select {|cell| cell == nil}.size
     duplicated_grids = empty_cells_number.times.map {Grid.new(3)}
     set_cells_state_for(duplicated_grids, cells)
   end
+
+  # def duplicated_grid_state
+  #   grid_copy = Grid.new(3)
+  #   grid_copy.instance_variable_set(:@cells, @cells.dup)
+  # end
 
   private
 
