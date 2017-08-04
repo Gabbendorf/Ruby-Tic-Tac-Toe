@@ -148,4 +148,17 @@ RSpec.describe UnbeatableComputer do
     expect(chosen_move).to eq(ideal_move)
   end
 
+  it "returns grid position number for best move chosen" do
+    grid.place_mark("3", "O")
+    grid.place_mark("2", "X")
+    grid.place_mark("5", "O")
+    grid.place_mark("1", "X")
+    possible_moves = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
+    computer_mark = "O"
+
+    move = computer.make_move(computer_mark)
+
+    expect(possible_moves).to include(move)
+  end
+
 end

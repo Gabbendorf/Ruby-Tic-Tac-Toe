@@ -1,13 +1,12 @@
-require_relative 'human_player'
 
 class TicTacToe
 
-  def initialize(ui, grid, game)
+  def initialize(ui, grid, game, user)
     @ui = ui
     @grid = grid
     @game = game
+    @first_player = user
     @intro = welcome_players
-    @first_player = HumanPlayer.new(@ui, @grid)
     @players = @game.players_and_marks(@first_player, @ui)
     @current_player = @game.starter(@players)
     @game_starter = @current_player

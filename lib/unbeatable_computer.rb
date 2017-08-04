@@ -10,6 +10,10 @@ class UnbeatableComputer
            :opponent => "X"
           }
 
+  def make_move(player_mark)
+    best_move_position
+  end
+
   def best_move_position
     max_value = possible_moves_and_scores.values.max
     best_grid = possible_moves_and_scores.key(max_value)
@@ -65,7 +69,12 @@ class UnbeatableComputer
     moves_and_scores = {}
     player_mark = switch_mark(player_mark)
     grid_copies = grid_copies_with_possible_moves(duplicated_grid, player_mark)
-    grid_copies.each {|grid_copy| moves_and_scores[grid_copy] = score(grid_copy, player_mark)}
+    grid_copies.each do |grid_copy|
+      moves_and_scores[grid_copy] = score(grid_copy, player_mark)
+      if moves_and_scores[grid_copy] == 10 && player_mark == MARKS[:computer]
+        break
+      end
+    end
     min_or_max_value(player_mark, moves_and_scores)
   end
 
