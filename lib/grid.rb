@@ -8,7 +8,7 @@ attr_reader :size, :cells
   end
 
   def place_mark(chosen_position, mark)
-    @cells[corresponding_cell_number_for(chosen_position)] = mark
+    @cells[corresponding_cell_for(chosen_position)] = mark
   end
   # find different name for this method
   def grid_display
@@ -18,7 +18,7 @@ attr_reader :size, :cells
   end
 
   def empty_position?(grid_position)
-    @cells[corresponding_cell_number_for(grid_position)] == nil
+    @cells[corresponding_cell_for(grid_position)] == nil
   end
 
   def grid_numbers
@@ -44,17 +44,24 @@ attr_reader :size, :cells
   def reset_cells
     @cells = create_cells
   end
-  #Try with not passing cells as argument (see below)
+  #Try with not passing cells as argument (see below). Change name
   def duplicated_grid_state(cells)
     empty_cells_number = cells.select {|cell| cell == nil}.size
-    duplicated_grids = empty_cells_number.times.map {Grid.new(3)}
+    duplicated_grids = empty_cells_number.times.map {Grid.new(@size)}
     set_cells_state_for(duplicated_grids, cells)
   end
 
   # def duplicated_grid_state
-  #   grid_copy = Grid.new(3)
+  #   grid_copy = Grid.new(@size)
   #   grid_copy.instance_variable_set(:@cells, @cells.dup)
+  #  grid_copy
   # end
+
+  def different_cell_position(grid_copy_cells)
+    @cells.zip(grid_copy_cells).select.find_index do |grid_cell, copy_cell|
+       grid_cell != copy_cell
+     end
+  end
 
   private
 
@@ -89,7 +96,7 @@ attr_reader :size, :cells
     [first_diagonal_row, second_diagonal_row]
   end
 
-  def corresponding_cell_number_for(grid_position)
+  def corresponding_cell_for(grid_position)
     grid_position.to_i - 1
   end
 

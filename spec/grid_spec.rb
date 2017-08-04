@@ -161,4 +161,19 @@ RSpec.describe Grid do
     expect(duplicated_grids.size).to eq(7)
   end
 
+  it "compares its cells with other cells and returns index for different cell" do
+    grid.place_mark("3", "O")
+    grid.place_mark("2", "X")
+    grid.place_mark("5", "O")
+    grid.place_mark("1", "X")
+    grid.place_mark("4", "O")
+    grid.place_mark("7", "X")
+    grid.place_mark("8", "O")
+    new_move = "O"
+
+    different_cell_position = grid.different_cell_position(["X", "X", "O", "O", "O", new_move, "X", "O", nil])
+
+    expect(different_cell_position).to eq(5)
+  end
+
 end

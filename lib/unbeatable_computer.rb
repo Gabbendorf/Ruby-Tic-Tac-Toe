@@ -2,22 +2,31 @@ require_relative 'grid'
 
 class UnbeatableComputer
 
-  attr_reader :possible_moves_and_scores
+  #attr_reader :moves_and_scores
 
   def initialize(grid)
     @grid = grid
-    @possible_moves_and_scores = {}
+    # @moves_and_scores = {}
   end
 
   MARKS = {:computer => "O",
            :opponent => "X"
           }
 
-  def add_possible_moves_and_scores
-    possible_moves = grid_copies_with_possible_moves(@grid.cells, MARKS[:computer])
-    possible_moves.each do |possible_move|
-      @possible_moves_and_scores[possible_move] = score(possible_move, MARKS[:computer])
+  def best_move_position
+    max_value = possible_moves_and_scores.values.max
+    best_grid = possible_moves_and_scores.key(max_value)
+    move_position = best_grid.different_cell_position(@grid.cells)
+    grid_position_for(move_position)
+  end
+
+  def possible_moves_and_scores
+    grids_with_moves = grid_copies_with_possible_moves(@grid.cells, MARKS[:computer])
+    @moves_and_scores = {}
+    grids_with_moves.each do |grid|
+      @moves_and_scores[grid] = score(grid, MARKS[:computer])
     end
+    @moves_and_scores
   end
 
   def score(duplicated_grid, player_mark)
@@ -28,6 +37,7 @@ class UnbeatableComputer
     end
   end
 
+# TODO: change this using grid methods place_mark and empty_position?
   def grid_copies_with_possible_moves(cells, player_mark)
     index = 0
     @grid.duplicated_grid_state(cells).each do |duplicated_grid|
@@ -73,6 +83,10 @@ class UnbeatableComputer
     else
       MARKS[:computer]
     end
+  end
+
+  def grid_position_for(cell_position)
+    (cell_position + 1).to_s
   end
 
 end

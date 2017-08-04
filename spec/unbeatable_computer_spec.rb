@@ -101,7 +101,7 @@ RSpec.describe UnbeatableComputer do
     end
   end
 
-  it "populates hash with grid copies each with possible move and score" do
+  it "populates hash with updated grid copies and scores as value, and move positions as key" do
     grid.place_mark("3", "O")
     grid.place_mark("2", "X")
     grid.place_mark("5", "O")
@@ -112,13 +112,28 @@ RSpec.describe UnbeatableComputer do
     grid.place_mark("6", "X")
     computer_mark = "O"
     possible_scores = [-10, 0, 10]
-    computer.add_possible_moves_and_scores
 
-    last_possible_move = computer.possible_moves_and_scores.keys[0].cells.last
-    move_score = computer.possible_moves_and_scores.values[0]
+    moves_and_scores = computer.possible_moves_and_scores
 
+    last_possible_move = moves_and_scores.keys[0].cells.last
+    move_score = moves_and_scores.values[0]
     expect(last_possible_move).to eq(computer_mark)
     expect(possible_scores).to include(move_score)
+  end
+
+  it "returns move with biggest score" do
+    grid.place_mark("3", "O")
+    grid.place_mark("2", "X")
+    grid.place_mark("5", "O")
+    grid.place_mark("1", "X")
+    grid.place_mark("4", "O")
+    grid.place_mark("7", "X")
+    grid.place_mark("8", "O")
+    ideal_move = "6"
+
+    chosen_move = computer.best_move_position
+
+    expect(chosen_move).to eq(ideal_move)
   end
 
 end
