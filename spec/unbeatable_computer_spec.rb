@@ -13,7 +13,7 @@ RSpec.describe UnbeatableComputer do
     grid.place_mark("6", "X")
     possible_move = "X"
 
-    grids_with_moves = computer.grid_copies_with_possible_moves(grid.cells, possible_move)
+    grids_with_moves = computer.grid_copies_with_possible_moves(grid, possible_move)
     first_duplicated_grid = grids_with_moves[0]
     sixth_duplicated_grid = grids_with_moves[5]
 
@@ -21,12 +21,24 @@ RSpec.describe UnbeatableComputer do
     expect(sixth_duplicated_grid.cells).to eq([nil, nil, "X", nil, "O", "X", nil, nil, possible_move])
   end
 
+  it "returns copies of grid" do
+    grid.place_mark("3", "X")
+    grid.place_mark("5", "O")
+    grid.place_mark("6", "X")
+
+    grid_copies = computer.copies_of_grid(grid)
+
+    first_grid_copy = grid_copies[0]
+    expect(grid_copies.size).to eq(6)
+    expect(first_grid_copy.cells).to eq([nil, nil, "X", nil, "O", "X", nil, nil, nil])
+  end
+
   describe "returns score for possible move according to game result prediction after minimax application" do
     it "returns 10 if possible move is winning move for computer and it's computer turn" do
       computer_mark = "O"
       grid.place_mark("1", computer_mark)
       grid.place_mark("3", computer_mark)
-      possible_moves = computer.grid_copies_with_possible_moves(grid.cells, computer_mark)
+      possible_moves = computer.grid_copies_with_possible_moves(grid, computer_mark)
       computer_winning_move = possible_moves[0]
 
       score = computer.score(computer_winning_move, computer_mark)
@@ -39,7 +51,7 @@ RSpec.describe UnbeatableComputer do
       opponent_mark = "X"
       grid.place_mark("1", computer_mark)
       grid.place_mark("3", computer_mark)
-      possible_moves = computer.grid_copies_with_possible_moves(grid.cells, opponent_mark)
+      possible_moves = computer.grid_copies_with_possible_moves(grid, opponent_mark)
       opponent_move_different_from_2 = possible_moves[4]
 
       score = computer.score(opponent_move_different_from_2, computer_mark)
@@ -51,7 +63,7 @@ RSpec.describe UnbeatableComputer do
       opponent_mark = "X"
       grid.place_mark("1", opponent_mark)
       grid.place_mark("2", opponent_mark)
-      possible_moves = computer.grid_copies_with_possible_moves(grid.cells, opponent_mark)
+      possible_moves = computer.grid_copies_with_possible_moves(grid, opponent_mark)
       opponent_winning_move = possible_moves[1]
 
       score = computer.score(opponent_winning_move, opponent_mark)
@@ -64,7 +76,7 @@ RSpec.describe UnbeatableComputer do
       computer_mark = "O"
       grid.place_mark("1", opponent_mark)
       grid.place_mark("2", opponent_mark)
-      possible_moves = computer.grid_copies_with_possible_moves(grid.cells, computer_mark)
+      possible_moves = computer.grid_copies_with_possible_moves(grid, computer_mark)
       computer_move_different_from_3 = possible_moves[2]
 
       score = computer.score(computer_move_different_from_3, computer_mark)
@@ -82,7 +94,7 @@ RSpec.describe UnbeatableComputer do
       grid.place_mark("7", "X")
       grid.place_mark("8", "O")
       grid.place_mark("6", "X")
-      possible_moves = computer.grid_copies_with_possible_moves(grid.cells, computer_mark)
+      possible_moves = computer.grid_copies_with_possible_moves(grid, computer_mark)
       last_move_possible = possible_moves[0]
 
       score = computer.score(last_move_possible, computer_mark)
@@ -92,7 +104,7 @@ RSpec.describe UnbeatableComputer do
 
     it "returns 0 if in next level of game states nobody can win" do
       computer_mark = "O"
-      possible_moves = computer.grid_copies_with_possible_moves(grid.cells, computer_mark)
+      possible_moves = computer.grid_copies_with_possible_moves(grid, computer_mark)
       first_move = possible_moves[0]
 
       score = computer.score(first_move, computer_mark)
@@ -101,7 +113,7 @@ RSpec.describe UnbeatableComputer do
     end
   end
 
-  it "populates hash with updated grid copies and scores as value, and move positions as key" do
+  it "returns hash with updated grid copies and scores as value, and move positions as key" do
     grid.place_mark("3", "O")
     grid.place_mark("2", "X")
     grid.place_mark("5", "O")

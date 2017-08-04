@@ -44,18 +44,12 @@ attr_reader :size, :cells
   def reset_cells
     @cells = create_cells
   end
-  #Try with not passing cells as argument (see below). Change name
-  def duplicated_grid_state(cells)
-    empty_cells_number = cells.select {|cell| cell == nil}.size
-    duplicated_grids = empty_cells_number.times.map {Grid.new(@size)}
-    set_cells_state_for(duplicated_grids, cells)
-  end
 
-  # def duplicated_grid_state
-  #   grid_copy = Grid.new(@size)
-  #   grid_copy.instance_variable_set(:@cells, @cells.dup)
-  #  grid_copy
-  # end
+  def duplicate_grid
+    grid_copy = Grid.new(@size)
+    grid_copy.instance_variable_set(:@cells, @cells.dup)
+    grid_copy
+  end
 
   def different_cell_position(grid_copy_cells)
     @cells.zip(grid_copy_cells).select.find_index do |grid_cell, copy_cell|
@@ -63,14 +57,11 @@ attr_reader :size, :cells
      end
   end
 
-  private
-
-  def set_cells_state_for(duplicated_grids, cells)
-    duplicated_grids.each do |duplicated_grid|
-      duplicated_cells = cells.dup
-      duplicated_grid.instance_variable_set(:@cells, duplicated_cells)
-    end
+  def empty_cells_count
+    @cells.select {|cell| cell == nil}.size
   end
+
+  private
 
   def create_cells
     Array.new(grid_dimension)

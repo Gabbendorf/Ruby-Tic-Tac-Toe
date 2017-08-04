@@ -2,11 +2,8 @@ require_relative 'grid'
 
 class UnbeatableComputer
 
-  #attr_reader :moves_and_scores
-
   def initialize(grid)
     @grid = grid
-    # @moves_and_scores = {}
   end
 
   MARKS = {:computer => "O",
@@ -21,7 +18,7 @@ class UnbeatableComputer
   end
 
   def possible_moves_and_scores
-    grids_with_moves = grid_copies_with_possible_moves(@grid.cells, MARKS[:computer])
+    grids_with_moves = grid_copies_with_possible_moves(@grid, MARKS[:computer])
     @moves_and_scores = {}
     grids_with_moves.each do |grid|
       @moves_and_scores[grid] = score(grid, MARKS[:computer])
@@ -37,16 +34,19 @@ class UnbeatableComputer
     end
   end
 
-# TODO: change this using grid methods place_mark and empty_position?
-  def grid_copies_with_possible_moves(cells, player_mark)
-    index = 0
-    @grid.duplicated_grid_state(cells).each do |duplicated_grid|
-      while duplicated_grid.cells[index] != nil
-        index += 1
+  def grid_copies_with_possible_moves(grid, player_mark)
+    position = 1
+    copies_of_grid(grid).each do |duplicated_grid|
+      while !duplicated_grid.empty_position?(position)
+        position += 1
       end
-      duplicated_grid.cells[index] = player_mark
-      index += 1
+      duplicated_grid.place_mark(position, player_mark)
+      position += 1
     end
+  end
+
+  def copies_of_grid(grid)
+    grid.empty_cells_count.times.map {grid.duplicate_grid}
   end
 
   private
@@ -64,7 +64,7 @@ class UnbeatableComputer
   def predict_score_with_minimax(duplicated_grid, player_mark)
     moves_and_scores = {}
     player_mark = switch_mark(player_mark)
-    grid_copies = grid_copies_with_possible_moves(duplicated_grid.cells, player_mark)
+    grid_copies = grid_copies_with_possible_moves(duplicated_grid, player_mark)
     grid_copies.each {|grid_copy| moves_and_scores[grid_copy] = score(grid_copy, player_mark)}
     min_or_max_value(player_mark, moves_and_scores)
   end
