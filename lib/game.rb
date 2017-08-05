@@ -1,6 +1,11 @@
 require_relative 'opponent_factory'
+require_relative 'grid_factory'
 
 class Game
+
+  def initialize
+    @grid_factory = GridFactory.new
+  end
 
   def players_and_marks(first_player, ui)
     {:first_player => {:player => first_player,
@@ -8,6 +13,14 @@ class Game
     :second_player => {:player => opponent(ui),
                        :mark => "O"}
     }
+  end
+
+  def grid(ui, players)
+    if second_player(players).is_a?(HumanPlayer)
+      @grid_factory.customised_grid(ui)
+    else
+      @grid_factory.standard_grid
+    end
   end
 
   def starter(players)

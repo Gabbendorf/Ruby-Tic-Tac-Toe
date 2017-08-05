@@ -39,6 +39,15 @@ class Ui
     opponent_choice
   end
 
+  def choose_grid_size
+    @stdout.puts "Choose grid size: 3 --> 3x3, 4 --> 4x4"
+    size_chosen = @stdin.gets.chomp.to_i
+    while size_chosen != 3 && size_chosen != 4
+      size_chosen = repeat_grid_size
+    end
+    size_chosen
+  end
+
   def ask_for_move(grid, player_mark)
     @stdout.puts "Player #{player_mark}, make your move:"
     move = @stdin.gets.chomp
@@ -105,6 +114,11 @@ class Ui
   def repeat_answer
     @stdout.puts "Sorry, I didn't understand: y --> yes, n --> quit"
     @stdin.gets.chomp.downcase
+  end
+
+  def repeat_grid_size
+    @stdout.puts "Sorry, I didn't understand: 3 --> 3x3, 4 --> 4x4"
+    @stdin.gets.chomp.to_i
   end
 
 end

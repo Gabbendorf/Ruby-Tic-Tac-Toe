@@ -13,10 +13,10 @@ RSpec.describe TicTacToe do
   describe "runs just 1 game" do
     it "runs a draw game between two human players" do
       input_to_quit = "n"
-      input = StringIO.new("h\n3\n2\n5\n1\n4\n7\n8\n6\n9\n" + input_to_quit)
+      input = StringIO.new("h\n3\n3\n2\n5\n1\n4\n7\n8\n6\n9\n" + input_to_quit)
       ui = Ui.new(input, output)
       first_player = HumanPlayer.new(ui)
-      new_game = TicTacToe.new(ui, grid, game, first_player)
+      new_game = TicTacToe.new(ui, game, first_player)
 
       new_game.run
 
@@ -28,7 +28,7 @@ RSpec.describe TicTacToe do
       input = StringIO.new("c\n" + input_to_quit)
       ui = Ui.new(input, output)
       first_player = FakeHumanPlayer.new(grid)
-      new_game = TicTacToe.new(ui, grid, game, first_player)
+      new_game = TicTacToe.new(ui, game, first_player)
 
       new_game.run
 
@@ -42,12 +42,12 @@ RSpec.describe TicTacToe do
     it "runs 2 games between two human players" do
       input_to_play_again = "y\n"
       input_to_quit = "n"
-      first_game_inputs = "h\n1\n4\n2\n5\n3\n"
-      second_game_inputs = "h\n3\n2\n5\n1\n4\n7\n8\n6\n9\n"
+      first_game_inputs = "h\n3\n1\n4\n2\n5\n3\n"
+      second_game_inputs = "h\n3\n3\n2\n5\n1\n4\n7\n8\n6\n9\n"
       input = StringIO.new(first_game_inputs + input_to_play_again + second_game_inputs + input_to_quit)
       ui = Ui.new(input, output)
       first_player = HumanPlayer.new(ui)
-      new_game = TicTacToe.new(ui, grid, game, first_player)
+      new_game = TicTacToe.new(ui, game, first_player)
 
       new_game.run
 
@@ -63,7 +63,7 @@ RSpec.describe TicTacToe do
       input = StringIO.new(starting_game_input + input_to_play_again + starting_game_input + input_to_quit)
       ui = Ui.new(input, output)
       first_player = FakeHumanPlayer.new(grid)
-      new_game = TicTacToe.new(ui, grid, game, first_player)
+      new_game = TicTacToe.new(ui, game, first_player)
 
       new_game.run
 

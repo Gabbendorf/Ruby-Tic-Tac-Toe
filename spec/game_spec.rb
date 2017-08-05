@@ -29,6 +29,25 @@ RSpec.describe Game do
     expect(second_player_mark).to eq("O")
   end
 
+  it "creates customised grid if second player is human player" do
+    players = game.players_and_marks(first_player, ui)
+
+    grid = game.grid(ui, players)
+
+    expect(grid.size).to eq(3)
+  end
+
+  it "creates standard grid 3x3 if second player is computer" do
+    player_input_for_computer = "c"
+    ui = Ui.new(StringIO.new(player_input_for_computer), output)
+    game = Game.new
+    players = game.players_and_marks(first_player, ui)
+
+    grid = game.grid(ui, players)
+
+    expect(grid.size).not_to eq(4)
+  end
+
   it "returns starter" do
     players = {:first_player => {:player => "human player", :mark => "X"},
                :second_player => {:player => "computer", :mark => "O"}}

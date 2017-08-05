@@ -140,14 +140,6 @@ RSpec.describe Grid do
     expect(winning_mark).to eq(:X)
   end
 
-  it "sets all cells to nil for new game" do
-    draw_game
-
-    grid.reset_cells
-
-    expect(grid.cells).to eq([nil, nil, nil, nil, nil, nil, nil, nil, nil])
-  end
-
   it "creates new copy of grid with same cells state" do
     duplicated_grid = grid.duplicate_grid
 

@@ -1,12 +1,12 @@
 class TicTacToe
 
-  def initialize(ui, grid, game, user)
+  def initialize(ui, game, user)
     @ui = ui
-    @grid = grid
     @game = game
     @first_player = user
     @intro = welcome_players
     @players = @game.players_and_marks(@first_player, @ui)
+    @grid = @game.grid(@ui, @players)
     @current_player = @game.starter(@players)
     @game_starter = @current_player
   end
@@ -39,11 +39,15 @@ class TicTacToe
 
   #TODO: change way to alternate starter maybe?
   def start_new_game
-    @grid.reset_cells
-    @players = @game.players_and_marks(@first_player, @ui)
+    reset_game
     @current_player = @game.switch_player(@game_starter, @players)
     @game_starter = @current_player
     run
+  end
+
+  def reset_game
+    @players = @game.players_and_marks(@first_player, @ui)
+    @grid = @game.grid(@ui, @players)
   end
 
 end

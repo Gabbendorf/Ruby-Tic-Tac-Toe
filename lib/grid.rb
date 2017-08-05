@@ -41,10 +41,6 @@ attr_reader :size, :cells
     winning_row.flatten.first
   end
 
-  def reset_cells
-    @cells = create_cells
-  end
-
   def duplicate_grid
     grid_copy = Grid.new(@size)
     grid_copy.instance_variable_set(:@cells, @cells.dup)

@@ -49,6 +49,26 @@ RSpec.describe Ui do
     expect(opponent_input).to eq("h")
   end
 
+  it "asks to choose grid size and returns instance of grid" do
+    ui = Ui.new(StringIO.new("3"), output)
+
+    grid_size = ui.choose_grid_size
+
+    expect(output.string).to include("Choose grid size: 3 --> 3x3, 4 --> 4x4")
+    expect(grid_size).to eq(3)
+  end
+
+  it "asks to repeat grid size choice if input is wrong" do
+    ui = Ui.new(StringIO.new("5\n3"), output)
+
+    grid_size = ui.choose_grid_size
+
+    expect(output.string).to include("Choose grid size: 3 --> 3x3, 4 --> 4x4")
+    expect(output.string).to include("Sorry, I didn't understand: 3 --> 3x3, 4 --> 4x")
+
+    expect(grid_size).to eq(3)
+  end
+
   it "asks to make move and returns correct move" do
     ui = Ui.new(StringIO.new("1"), output)
     player_mark = "X"
