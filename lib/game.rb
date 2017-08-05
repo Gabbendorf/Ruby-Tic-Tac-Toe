@@ -2,10 +2,6 @@ require_relative 'opponent_factory'
 
 class Game
 
-  def initialize(grid)
-    @grid = grid
-  end
-
   def players_and_marks(first_player, ui)
     {:first_player => {:player => first_player,
                        :mark => "X"},
@@ -26,10 +22,10 @@ class Game
     end
   end
 
-  def make_move(current_player, players)
+  def make_move(current_player, players, grid)
     mark = mark(current_player, players)
-    move = current_player.make_move(mark)
-    @grid.place_mark(move, mark)
+    move = current_player.make_move(mark, grid)
+    grid.place_mark(move, mark)
   end
 
   private
@@ -44,7 +40,7 @@ class Game
 
   def opponent(ui)
     opponent_choice = ui.choose_opponent
-    OpponentFactory.new(ui, @grid).create_opponent(opponent_choice)
+    OpponentFactory.new(ui).create_opponent(opponent_choice)
   end
 
   def mark(current_player, players)

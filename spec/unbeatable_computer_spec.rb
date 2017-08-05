@@ -7,20 +7,20 @@ RSpec.describe UnbeatableComputer do
 
   let(:grid) {Grid.new(3)}
   let(:ui) {Ui.new(StringIO.new, StringIO.new)}
-  let(:computer) {UnbeatableComputer.new(ui, grid)}
+  let(:computer) {UnbeatableComputer.new(ui)}
 
   it "returns duplicated grids each with current player mark placed in different empty cell" do
     grid.place_mark("3", "X")
     grid.place_mark("5", "O")
     grid.place_mark("6", "X")
-    possible_move = "X"
+    computer_mark = "X"
 
-    grids_with_moves = computer.grid_copies_with_possible_moves(grid, possible_move)
+    grids_with_moves = computer.grid_copies_with_possible_moves(grid, computer_mark)
     first_duplicated_grid = grids_with_moves[0]
     sixth_duplicated_grid = grids_with_moves[5]
 
-    expect(first_duplicated_grid.cells).to eq([possible_move, nil, "X", nil, "O", "X", nil, nil, nil])
-    expect(sixth_duplicated_grid.cells).to eq([nil, nil, "X", nil, "O", "X", nil, nil, possible_move])
+    expect(first_duplicated_grid.cells).to eq([computer_mark, nil, "X", nil, "O", "X", nil, nil, nil])
+    expect(sixth_duplicated_grid.cells).to eq([nil, nil, "X", nil, "O", "X", nil, nil, computer_mark])
   end
 
   it "returns copies of grid" do
@@ -127,7 +127,7 @@ RSpec.describe UnbeatableComputer do
     computer_mark = "O"
     possible_scores = [-10, 0, 10]
 
-    moves_and_scores = computer.possible_moves_and_scores
+    moves_and_scores = computer.possible_moves_and_scores(grid)
 
     last_possible_move = moves_and_scores.keys[0].cells.last
     move_score = moves_and_scores.values[0]
@@ -145,7 +145,7 @@ RSpec.describe UnbeatableComputer do
     grid.place_mark("8", "O")
     ideal_move = "6"
 
-    chosen_move = computer.best_move_position
+    chosen_move = computer.best_move_position(grid)
 
     expect(chosen_move).to eq(ideal_move)
   end
@@ -154,7 +154,7 @@ RSpec.describe UnbeatableComputer do
     possible_moves = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
     computer_mark = "O"
 
-    move = computer.make_move(computer_mark)
+    move = computer.make_move(computer_mark, grid)
 
     expect(possible_moves).to include(move)
   end
@@ -167,7 +167,7 @@ RSpec.describe UnbeatableComputer do
     possible_moves = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
     computer_mark = "O"
 
-    move = computer.make_move(computer_mark)
+    move = computer.make_move(computer_mark, grid)
 
     expect(possible_moves).to include(move)
   end

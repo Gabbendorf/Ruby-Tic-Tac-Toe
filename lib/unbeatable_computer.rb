@@ -1,39 +1,34 @@
-require_relative 'grid'
-
 class UnbeatableComputer
 
-  def initialize(ui, grid)
+  def initialize(ui)
     @ui = ui
-    @grid = grid
   end
 
   MARKS = {:computer => "O",
            :opponent => "X"
           }
 
-  POSSIBLE_MOVES = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
-
-  def make_move(player_mark)
+  def make_move(player_mark, grid)
     @ui.announce_computer_moving(player_mark)
-    if starting_move?
-      random_move_position
+    if starting_move?(grid)
+      random_move_position(grid)
     else
-      best_move_position
+      best_move_position(grid)
     end
   end
 
-  def best_move_position
-    max_value = possible_moves_and_scores.values.max
-    best_grid = possible_moves_and_scores.key(max_value)
-    move_position = best_grid.different_cell_position(@grid.cells)
+  def best_move_position(grid)
+    max_value = possible_moves_and_scores(grid).values.max
+    best_grid = possible_moves_and_scores(grid).key(max_value)
+    move_position = best_grid.different_cell_position(grid.cells)
     grid_position_for(move_position)
   end
 
-  def possible_moves_and_scores
-    grids_with_moves = grid_copies_with_possible_moves(@grid, MARKS[:computer])
+  def possible_moves_and_scores(grid)
+    grids_with_moves = grid_copies_with_possible_moves(grid, MARKS[:computer])
     moves_and_scores = {}
-    grids_with_moves.each do |grid|
-      moves_and_scores[grid] = score(grid, MARKS[:computer])
+    grids_with_moves.each do |possible_grid|
+      moves_and_scores[possible_grid] = score(possible_grid, MARKS[:computer])
     end
     moves_and_scores
   end
@@ -122,14 +117,14 @@ class UnbeatableComputer
     (cell_position + 1).to_s
   end
 
-  def starting_move?
-    @grid.empty_cells_count == 9
+  def starting_move?(grid)
+    grid.empty_cells_count == 9
   end
 
-  def random_move_position
-    random_move_position = POSSIBLE_MOVES.sample
-    while !@grid.empty_position?(random_move_position)
-      random_move_position = POSSIBLE_MOVES.sample
+  def random_move_position(grid)
+    random_move_position = grid.grid_numbers.sample
+    while !grid.empty_position?(random_move_position)
+      random_move_position = grid.grid_numbers.sample
     end
     random_move_position
   end

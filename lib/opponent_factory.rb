@@ -3,16 +3,15 @@ require_relative 'unbeatable_computer'
 
 class OpponentFactory
 
-  def initialize(ui, grid)
+  def initialize(ui)
     @ui = ui
-    @grid = grid
   end
 
   def create_opponent(opponent_choice)
     if opponent_choice == "h"
-      HumanPlayer.new(@ui, @grid)
+      HumanPlayer.new(@ui)
     else
-      UnbeatableComputer.new(@ui, @grid)
+      UnbeatableComputer.new(@ui)
     end
   end
 

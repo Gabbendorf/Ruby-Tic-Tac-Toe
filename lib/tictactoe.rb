@@ -14,7 +14,7 @@ class TicTacToe
   def run
     while !@grid.end_game?
       @ui.print_grid(@grid)
-      @game.make_move(@current_player, @players)
+      @game.make_move(@current_player, @players, @grid)
       @current_player = @game.switch_player(@current_player, @players)
     end
     report_verdict

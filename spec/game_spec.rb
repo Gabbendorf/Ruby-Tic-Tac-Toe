@@ -9,13 +9,13 @@ RSpec.describe Game do
   let(:output) {StringIO.new}
   let(:input) {StringIO.new("h\n3")}
   let(:ui) {Ui.new(input, output)}
-  let(:game) {Game.new(grid)}
-  let(:first_player) {HumanPlayer.new(ui, grid)}
+  let(:game) {Game.new}
+  let(:first_player) {HumanPlayer.new(ui)}
 
   it "returns hash with players and their marks" do
     player_input_for_computer = "c"
     ui = Ui.new(StringIO.new(player_input_for_computer), output)
-    game = Game.new(grid)
+    game = Game.new
 
     players = game.players_and_marks(first_player, ui)
     first_player = players[:first_player][:player]
@@ -54,7 +54,7 @@ RSpec.describe Game do
     players = game.players_and_marks(first_player, ui)
     current_player = game.starter(players)
 
-    game.make_move(current_player, players)
+    game.make_move(current_player, players, grid)
 
     grid_state = grid.cells
     expect(grid_state).to eq([nil, nil, "X", nil, nil, nil, nil, nil, nil])

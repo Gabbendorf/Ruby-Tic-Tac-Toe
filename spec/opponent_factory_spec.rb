@@ -1,15 +1,13 @@
 require 'spec_helper'
 require_relative '../lib/opponent_factory'
 require_relative '../lib/ui'
-require_relative '../lib/grid'
 require_relative '../lib/human_player'
 require_relative '../lib/unbeatable_computer'
 
 RSpec.describe OpponentFactory do
 
   let(:ui) {Ui.new(StringIO.new, StringIO.new)}
-  let(:grid) {Grid.new(3)}
-  let(:opponent_factory) {OpponentFactory.new(ui, grid)}
+  let(:opponent_factory) {OpponentFactory.new(ui)}
 
   it "creates human player opponent" do
     opponent_choice = "h"

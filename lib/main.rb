@@ -7,7 +7,7 @@ require_relative 'game'
 grid = Grid.new(3)
 ui = Ui.new($stdin, $stdout)
 game = Game.new(grid)
-user = HumanPlayer.new(ui, grid)
+user = HumanPlayer.new(ui)
 new_game = TicTacToe.new(ui, grid, game, user)
 
 new_game.run
