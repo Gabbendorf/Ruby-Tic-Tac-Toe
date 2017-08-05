@@ -1,4 +1,3 @@
-
 class TicTacToe
 
   def initialize(ui, grid, game, user)
@@ -14,6 +13,7 @@ class TicTacToe
 
   def run
     while !@grid.end_game?
+      @ui.print_grid(@grid)
       @game.make_move(@current_player, @players)
       @current_player = @game.switch_player(@current_player, @players)
     end

@@ -9,7 +9,6 @@ class HumanPlayer
   end
 
   def make_move(player_mark)
-    @ui.print_grid(@grid)
     @ui.ask_for_move(@grid, player_mark)
   end
 

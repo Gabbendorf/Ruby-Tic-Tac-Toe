@@ -1,11 +1,13 @@
 require 'spec_helper'
 require_relative '../lib/unbeatable_computer'
 require_relative '../lib/grid'
+require_relative '../lib/ui'
 
 RSpec.describe UnbeatableComputer do
 
   let(:grid) {Grid.new(3)}
-  let(:computer) {UnbeatableComputer.new(grid)}
+  let(:ui) {Ui.new(StringIO.new, StringIO.new)}
+  let(:computer) {UnbeatableComputer.new(ui, grid)}
 
   it "returns duplicated grids each with current player mark placed in different empty cell" do
     grid.place_mark("3", "X")

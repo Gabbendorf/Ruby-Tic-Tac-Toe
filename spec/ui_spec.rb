@@ -80,6 +80,14 @@ RSpec.describe Ui do
     expect(move_position).to eq("2")
   end
 
+  it "announce it's computer's turn" do
+    computer_mark = "O"
+
+    ui.announce_computer_moving(computer_mark)
+
+    expect(output.string).to eq("Player O's turn:\n\n")
+  end
+
   it "declares a winner" do
     winning_mark = "X"
 

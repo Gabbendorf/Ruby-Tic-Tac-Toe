@@ -45,6 +45,11 @@ class Ui
     validated_move(move, grid)
   end
 
+  def announce_computer_moving(player_mark)
+    @stdout.puts "Player #{player_mark}'s turn:"
+    @stdout.puts NEW_LINE
+  end
+
   def declare_winner(player_mark)
     @stdout.puts "Player #{player_mark} wins!\n"
     @stdout.puts NEW_LINE

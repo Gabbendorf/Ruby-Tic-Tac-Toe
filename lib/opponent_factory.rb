@@ -12,7 +12,7 @@ class OpponentFactory
     if opponent_choice == "h"
       HumanPlayer.new(@ui, @grid)
     else
-      UnbeatableComputer.new(@grid)
+      UnbeatableComputer.new(@ui, @grid)
     end
   end
 

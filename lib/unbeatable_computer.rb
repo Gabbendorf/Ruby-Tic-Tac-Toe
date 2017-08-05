@@ -2,7 +2,8 @@ require_relative 'grid'
 
 class UnbeatableComputer
 
-  def initialize(grid)
+  def initialize(ui, grid)
+    @ui = ui
     @grid = grid
   end
 
@@ -13,6 +14,7 @@ class UnbeatableComputer
   POSSIBLE_MOVES = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
   def make_move(player_mark)
+    @ui.announce_computer_moving(player_mark)
     if starting_move?
       random_move_position
     else
