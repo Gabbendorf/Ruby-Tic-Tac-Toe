@@ -42,15 +42,7 @@ class Ui
   def ask_for_move(grid, player_mark)
     @stdout.puts "Player #{player_mark}, make your move:"
     move = @stdin.gets.chomp
-    while !grid.grid_numbers.include?(move)
-      move = repeat_move
-    end
-    move
-  end
-#TODO: it breaks when input entered here is not vali
-  def ask_for_empty_position
-    @stdout.puts "Position already occupied, please move again:"
-    @stdin.gets.chomp
+    validated_move(move, grid)
   end
 
   def declare_winner(player_mark)
@@ -78,6 +70,18 @@ class Ui
 
   private
 
+  def validated_move(move, grid)
+    if !grid.grid_numbers.include?(move)
+      move = repeat_move
+      validated_move(move, grid)
+    elsif !grid.empty_position?(move)
+      move = ask_for_empty_position
+      validated_move(move, grid)
+    else
+      move
+    end
+  end
+
   def repeat_opponent_choice
     @stdout.puts "Sorry, I didn't understand: h --> human player, c --> computer"
     @stdin.gets.chomp.downcase
@@ -85,6 +89,11 @@ class Ui
 
   def repeat_move
     @stdout.puts "Move not valid, please repeat your move:"
+    @stdin.gets.chomp
+  end
+
+  def ask_for_empty_position
+    @stdout.puts "Position already occupied, please move again:"
     @stdin.gets.chomp
   end
 

@@ -42,40 +42,42 @@ RSpec.describe Ui do
   it "asks again to choose opponent if opponent choice input is wrong" do
     ui = Ui.new(StringIO.new("human\nh"), output)
 
-    opponent = ui.choose_opponent
+    opponent_input = ui.choose_opponent
 
     expect(output.string).to include("Choose your opponent: h --> human player, c --> computer")
     expect(output.string).to include("Sorry, I didn't understand: h --> human player, c --> computer")
-    expect(opponent).to eq("h")
+    expect(opponent_input).to eq("h")
   end
 
-  it "asks to make move" do
+  it "asks to make move and returns correct move" do
     ui = Ui.new(StringIO.new("1"), output)
     player_mark = "X"
 
-    opponent = ui.ask_for_move(grid, player_mark)
+    move_position = ui.ask_for_move(grid, player_mark)
 
     expect(output.string).to include("Player X, make your move:")
-    expect(opponent).to eq("1")
+    expect(move_position).to eq("1")
   end
 
-  it "asks to make move again if input is wrong" do
+  it "asks to make move and returns validated move for invalid input" do
     ui = Ui.new(StringIO.new("11\n1"), output)
     player_mark = "X"
 
-    opponent = ui.ask_for_move(grid, player_mark)
+    move_position = ui.ask_for_move(grid, player_mark)
 
     expect(output.string).to include("Move not valid, please repeat your move:")
-    expect(opponent).to eq("1")
+    expect(move_position).to eq("1")
   end
 
-  it "asks to make move again if position is already occupied" do
-    ui = Ui.new(StringIO.new("1"), output)
+  it "asks to make move and returns validated move for already chosen move" do
+    player_mark = "X"
+    grid.place_mark("1", player_mark)
+    ui = Ui.new(StringIO.new("1\n2"), output)
 
-    opponent = ui.ask_for_empty_position
+    move_position = ui.ask_for_move(grid, player_mark)
 
     expect(output.string).to include("Position already occupied, please move again:")
-    expect(opponent).to eq("1")
+    expect(move_position).to eq("2")
   end
 
   it "declares a winner" do
