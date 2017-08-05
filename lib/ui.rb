@@ -47,7 +47,7 @@ class Ui
     end
     move
   end
-
+#TODO: it breaks when input entered here is not vali
   def ask_for_empty_position
     @stdout.puts "Position already occupied, please move again:"
     @stdin.gets.chomp

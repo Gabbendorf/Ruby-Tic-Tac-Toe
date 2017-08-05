@@ -58,7 +58,7 @@ attr_reader :size, :cells
   end
 
   def empty_cells_count
-    @cells.select {|cell| cell == nil}.size
+    @cells.count {|cell| cell == nil}
   end
 
   private
@@ -96,7 +96,7 @@ attr_reader :size, :cells
   end
 
   def all_cells_full?
-    @cells.all? {|cell| cell != nil}
+    empty_cells_count == 0
   end
 
   def winning_row

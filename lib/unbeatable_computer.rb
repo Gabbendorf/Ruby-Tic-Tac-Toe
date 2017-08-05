@@ -10,8 +10,14 @@ class UnbeatableComputer
            :opponent => "X"
           }
 
+  POSSIBLE_MOVES = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
+
   def make_move(player_mark)
-    best_move_position
+    if starting_move?
+      random_move_position
+    else
+      best_move_position
+    end
   end
 
   def best_move_position
@@ -23,18 +29,18 @@ class UnbeatableComputer
 
   def possible_moves_and_scores
     grids_with_moves = grid_copies_with_possible_moves(@grid, MARKS[:computer])
-    @moves_and_scores = {}
+    moves_and_scores = {}
     grids_with_moves.each do |grid|
-      @moves_and_scores[grid] = score(grid, MARKS[:computer])
+      moves_and_scores[grid] = score(grid, MARKS[:computer])
     end
-    @moves_and_scores
+    moves_and_scores
   end
 
   def score(duplicated_grid, player_mark)
     if duplicated_grid.end_game?
-      get_score(duplicated_grid)
+      grid_final_state_score(duplicated_grid)
     else
-      predict_score_with_minimax(duplicated_grid, player_mark)
+      calculate_score_with_minimax(duplicated_grid, player_mark)
     end
   end
 
@@ -55,7 +61,7 @@ class UnbeatableComputer
 
   private
 
-  def get_score(duplicated_grid)
+  def grid_final_state_score(duplicated_grid)
     if duplicated_grid.winning_mark == MARKS[:computer]
       10
     elsif duplicated_grid.winning_mark == MARKS[:opponent]
@@ -65,16 +71,10 @@ class UnbeatableComputer
     end
   end
 
-  def predict_score_with_minimax(duplicated_grid, player_mark)
-    moves_and_scores = {}
+  def calculate_score_with_minimax(duplicated_grid, player_mark)
     player_mark = switch_mark(player_mark)
     grid_copies = grid_copies_with_possible_moves(duplicated_grid, player_mark)
-    grid_copies.each do |grid_copy|
-      moves_and_scores[grid_copy] = score(grid_copy, player_mark)
-      if moves_and_scores[grid_copy] == 10 && player_mark == MARKS[:computer]
-        break
-      end
-    end
+    moves_and_scores = get_score_for_moves(grid_copies, duplicated_grid, player_mark)
     min_or_max_value(player_mark, moves_and_scores)
   end
 
@@ -84,6 +84,28 @@ class UnbeatableComputer
     else
       moves_and_scores.values.min
     end
+  end
+
+  def get_score_for_moves(grid_copies, duplicated_grid, player_mark)
+    moves_and_scores = {}
+    grid_copies.each do |grid_copy|
+      moves_and_scores[grid_copy] = score(grid_copy, player_mark)
+      break if grid_final_state_found?(moves_and_scores, grid_copy, player_mark)
+    end
+    moves_and_scores
+  end
+
+  def grid_final_state_found?(moves_and_scores, grid_copy, player_mark)
+    best_move_found(moves_and_scores, grid_copy, player_mark) ||
+    worst_move_found(moves_and_scores, grid_copy, player_mark)
+  end
+
+  def best_move_found(moves_and_scores, grid_copy, player_mark)
+    moves_and_scores[grid_copy] == 10 && player_mark == MARKS[:computer]
+  end
+
+  def worst_move_found(moves_and_scores, grid_copy, player_mark)
+    moves_and_scores[grid_copy] == -10 && player_mark == MARKS[:opponent]
   end
 
   def switch_mark(player_mark)
@@ -96,6 +118,18 @@ class UnbeatableComputer
 
   def grid_position_for(cell_position)
     (cell_position + 1).to_s
+  end
+
+  def starting_move?
+    @grid.empty_cells_count == 9
+  end
+
+  def random_move_position
+    random_move_position = POSSIBLE_MOVES.sample
+    while !@grid.empty_position?(random_move_position)
+      random_move_position = POSSIBLE_MOVES.sample
+    end
+    random_move_position
   end
 
 end
