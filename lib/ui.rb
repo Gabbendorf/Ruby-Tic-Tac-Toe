@@ -99,7 +99,7 @@ class Ui
       move
     end
   end
-  
+
   def apologize
     @stdout.puts "Sorry, I didn't understand!"
   end

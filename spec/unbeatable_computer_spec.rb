@@ -43,7 +43,7 @@ RSpec.describe UnbeatableComputer do
       possible_moves = computer.grid_copies_with_possible_moves(grid, computer_mark)
       computer_winning_move = possible_moves[0]
 
-      score = computer.score(computer_winning_move, computer_mark)
+      score = computer.move_score(computer_winning_move, computer_mark)
 
       expect(score).to eq(10)
     end
@@ -56,7 +56,7 @@ RSpec.describe UnbeatableComputer do
       possible_moves = computer.grid_copies_with_possible_moves(grid, opponent_mark)
       opponent_move_different_from_2 = possible_moves[4]
 
-      score = computer.score(opponent_move_different_from_2, computer_mark)
+      score = computer.move_score(opponent_move_different_from_2, computer_mark)
 
       expect(score).to eq(10)
     end
@@ -68,7 +68,7 @@ RSpec.describe UnbeatableComputer do
       possible_moves = computer.grid_copies_with_possible_moves(grid, opponent_mark)
       opponent_winning_move = possible_moves[1]
 
-      score = computer.score(opponent_winning_move, opponent_mark)
+      score = computer.move_score(opponent_winning_move, opponent_mark)
 
       expect(score).to eq(-10)
     end
@@ -81,7 +81,7 @@ RSpec.describe UnbeatableComputer do
       possible_moves = computer.grid_copies_with_possible_moves(grid, computer_mark)
       computer_move_different_from_3 = possible_moves[2]
 
-      score = computer.score(computer_move_different_from_3, computer_mark)
+      score = computer.move_score(computer_move_different_from_3, computer_mark)
 
       expect(score).to eq(-10)
     end
@@ -99,7 +99,7 @@ RSpec.describe UnbeatableComputer do
       possible_moves = computer.grid_copies_with_possible_moves(grid, computer_mark)
       last_move_possible = possible_moves[0]
 
-      score = computer.score(last_move_possible, computer_mark)
+      score = computer.move_score(last_move_possible, computer_mark)
 
       expect(score).to eq(0)
     end
@@ -109,7 +109,7 @@ RSpec.describe UnbeatableComputer do
       possible_moves = computer.grid_copies_with_possible_moves(grid, computer_mark)
       first_move = possible_moves[0]
 
-      score = computer.score(first_move, computer_mark)
+      score = computer.move_score(first_move, computer_mark)
 
       expect(score).to eq(0)
     end
