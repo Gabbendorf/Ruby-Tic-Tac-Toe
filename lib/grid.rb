@@ -7,14 +7,26 @@ attr_reader :size, :cells
     @cells = create_cells
   end
 
+  def small_grid_display
+    underlined_lines = prepare_grid[0..-2].map do |line|
+      line.join("  |  ") + "\n_____________\n"
+    end
+    last_line = prepare_grid.last.join("  |  ")
+    underlined_lines[0] + underlined_lines[1] + last_line
+  end
+
+  def big_grid_display
+    underline = "\n____________________\n"
+    first_2_lines = prepare_grid[0..-2].map {|line| line.join("  |  ") + underline}
+    shorter_number = prepare_grid[2][0] + "  |  "
+    longer_numbers = prepare_grid[2][1..3].join(" |  ")
+    third_line =  shorter_number + longer_numbers + underline
+    last_line = prepare_grid.last.join(" |  ")
+    first_2_lines[0] + first_2_lines[1] + third_line + last_line
+  end
+  
   def place_mark(chosen_position, mark)
     @cells[corresponding_cell_for(chosen_position)] = mark
-  end
-  # find different name for this method
-  def grid_display
-    filled_cells = @cells.map.with_index { |cell, index| cell.nil? ?
-      grid_numbers[index] : cell }
-    filled_cells.each_slice(@size).to_a
   end
 
   def empty_position?(grid_position)
@@ -65,6 +77,12 @@ attr_reader :size, :cells
 
   def grid_dimension
     @size * @size
+  end
+
+  def prepare_grid
+    filled_cells = @cells.map.with_index { |cell, index| cell.nil? ?
+      grid_numbers[index] : cell }
+    filled_cells.each_slice(@size).to_a
   end
 
   def all_rows

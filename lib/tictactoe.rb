@@ -13,7 +13,7 @@ class TicTacToe
 
   def run
     while !@grid.end_game?
-      @ui.print_grid(@grid)
+      @ui.print_grid(@grid.size, @grid)
       @game.make_move(@current_player, @players, @grid)
       @current_player = @game.switch_player(@current_player, @players)
     end
@@ -29,7 +29,7 @@ class TicTacToe
   end
 
   def report_verdict
-    @ui.print_grid(@grid)
+    @ui.print_grid(@grid.size, @grid)
     if @grid.verdict == :winner
       @ui.declare_winner(@grid.winning_mark)
     else

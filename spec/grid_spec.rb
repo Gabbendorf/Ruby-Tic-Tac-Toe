@@ -35,6 +35,19 @@ RSpec.describe Grid do
     expect(grid_cells).to eq([nil, nil, nil, nil, nil, nil, nil, nil, nil])
   end
 
+  it "prepares display of grid size 3x3" do
+    grid_display = grid.small_grid_display
+
+    expect(grid_display).to eq("1  |  2  |  3\n_____________\n4  |  5  |  6\n_____________\n7  |  8  |  9")
+  end
+
+  it "prepares display of grid size 4x4" do
+    grid = Grid.new(4)
+    grid_display = grid.big_grid_display
+
+    expect(grid_display).to eq("1  |  2  |  3  |  4\n____________________\n5  |  6  |  7  |  8\n____________________\n9  |  10 |  11 |  12\n____________________\n13 |  14 |  15 |  16")
+  end
+
   it "places mark on grid" do
     mark = "X"
     grid_position = "3"
@@ -56,22 +69,6 @@ RSpec.describe Grid do
 
     grid_cells = grid.cells
     expect(grid_cells).to eq([nil, nil, "X", nil, nil, "O", nil, nil, nil])
-  end
-
-  it "prepares array of arrays of numbers for correspondent empty cells" do
-    cells_display = grid.grid_display
-
-    expect(cells_display).to eq([["1", "2", "3"], ["4", "5", "6"], ["7", "8", "9"]])
-  end
-
-  it "prepares array of arrays of numbers for correspondent empty cells and of placed marks if there are any" do
-    mark = "X"
-    grid_position = "3"
-    grid.place_mark(grid_position, mark)
-
-    cells_display = grid.grid_display
-
-    expect(cells_display).to eq([["1", "2", "X"], ["4", "5", "6"], ["7", "8", "9"]])
   end
 
   it "returns true if cell is empty" do

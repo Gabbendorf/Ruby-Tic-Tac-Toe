@@ -82,7 +82,7 @@ class UnbeatableComputer
       moves_and_scores.values.min
     end
   end
-
+  #TODO: grids should be shuffled to avoid making always same moves
   def get_score_for_moves(grid_copies, duplicated_grid, player_mark)
     moves_and_scores = {}
     grid_copies.each do |grid_copy|

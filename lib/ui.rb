@@ -22,11 +22,12 @@ class Ui
     @stdout.puts LOGO
   end
 
-  def print_grid(grid)
-    grid.grid_display[0..-2].each do |array|
-      @stdout.puts array.join("  |  ") << "\n_____________"
+  def print_grid(grid_size, grid)
+    if grid_size == 3
+      @stdout.puts grid.small_grid_display
+    else
+      @stdout.puts grid.big_grid_display
     end
-    @stdout.puts grid.grid_display.last.join("  |  ")
     @stdout.puts NEW_LINE
   end
 
@@ -95,7 +96,7 @@ class Ui
       move
     end
   end
-
+  #TODO: use same method to say "sorry, bla bla bla"
   def repeat_opponent_choice
     @stdout.puts "Sorry, I didn't understand: h --> human player, c --> computer"
     @stdin.gets.chomp.downcase
