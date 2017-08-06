@@ -35,7 +35,8 @@ class Ui
     @stdout.puts "Choose your opponent: h --> human player, c --> computer"
     opponent_choice = @stdin.gets.chomp.downcase
     while opponent_choice != "h" && opponent_choice != "c"
-      opponent_choice = repeat_opponent_choice
+      apologize
+      opponent_choice = choose_opponent
     end
     opponent_choice
   end
@@ -44,7 +45,8 @@ class Ui
     @stdout.puts "Choose grid size: 3 --> 3x3, 4 --> 4x4"
     size_chosen = @stdin.gets.chomp.to_i
     while size_chosen != 3 && size_chosen != 4
-      size_chosen = repeat_grid_size
+      apologize
+      size_chosen = choose_grid_size
     end
     size_chosen
   end
@@ -74,7 +76,8 @@ class Ui
     @stdout.puts "Do you want to play again? y --> yes, n --> quit"
     answer = @stdin.gets.chomp.downcase
     while answer != "y" && answer != "n"
-      answer = repeat_answer
+      apologize
+      answer = ask_to_play_again
     end
     answer
   end
@@ -96,10 +99,9 @@ class Ui
       move
     end
   end
-  #TODO: use same method to say "sorry, bla bla bla"
-  def repeat_opponent_choice
-    @stdout.puts "Sorry, I didn't understand: h --> human player, c --> computer"
-    @stdin.gets.chomp.downcase
+  
+  def apologize
+    @stdout.puts "Sorry, I didn't understand!"
   end
 
   def repeat_move
@@ -110,16 +112,6 @@ class Ui
   def ask_for_empty_position
     @stdout.puts "Position already occupied, please move again:"
     @stdin.gets.chomp
-  end
-
-  def repeat_answer
-    @stdout.puts "Sorry, I didn't understand: y --> yes, n --> quit"
-    @stdin.gets.chomp.downcase
-  end
-
-  def repeat_grid_size
-    @stdout.puts "Sorry, I didn't understand: 3 --> 3x3, 4 --> 4x4"
-    @stdin.gets.chomp.to_i
   end
 
 end

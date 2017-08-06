@@ -50,17 +50,18 @@ RSpec.describe Ui do
     expect(opponent).to eq("h")
   end
 
-  it "asks again to choose opponent if opponent choice input is wrong" do
+  it "apologizes and asks again to choose opponent if opponent choice input is wrong" do
     ui = Ui.new(StringIO.new("human\nh"), output)
 
     opponent_input = ui.choose_opponent
 
     expect(output.string).to include("Choose your opponent: h --> human player, c --> computer")
-    expect(output.string).to include("Sorry, I didn't understand: h --> human player, c --> computer")
+    expect(output.string).to include("Sorry, I didn't understand!")
+    expect(output.string).to include("Choose your opponent: h --> human player, c --> computer")
     expect(opponent_input).to eq("h")
   end
 
-  it "asks to choose grid size and returns instance of grid" do
+  it "asks to choose grid size and returns it" do
     ui = Ui.new(StringIO.new("3"), output)
 
     grid_size = ui.choose_grid_size
@@ -69,13 +70,14 @@ RSpec.describe Ui do
     expect(grid_size).to eq(3)
   end
 
-  it "asks to repeat grid size choice if input is wrong" do
+  it "apologizes and asks to repeat grid size choice if input is wrong" do
     ui = Ui.new(StringIO.new("5\n3"), output)
 
     grid_size = ui.choose_grid_size
 
     expect(output.string).to include("Choose grid size: 3 --> 3x3, 4 --> 4x4")
-    expect(output.string).to include("Sorry, I didn't understand: 3 --> 3x3, 4 --> 4x")
+    expect(output.string).to include("Sorry, I didn't understand!")
+    expect(output.string).to include("Choose grid size: 3 --> 3x3, 4 --> 4x4")
 
     expect(grid_size).to eq(3)
   end
@@ -111,7 +113,7 @@ RSpec.describe Ui do
     expect(move_position).to eq("2")
   end
 
-  it "announce it's computer's turn" do
+  it "announces it's computer's = player O's turn" do
     computer_mark = "O"
 
     ui.announce_computer_moving(computer_mark)
@@ -142,13 +144,14 @@ RSpec.describe Ui do
     expect(answer).to eq("y")
   end
 
-  it "asks to answer y or n again if input is wrong" do
+  it "apologizes and asks to answer y or n again if input is wrong" do
     ui = Ui.new(StringIO.new("g\ny"), output)
 
     answer = ui.ask_to_play_again
 
     expect(output.string).to include("Do you want to play again? y --> yes, n --> quit")
-    expect(output.string).to include("Sorry, I didn't understand: y --> yes, n --> quit")
+    expect(output.string).to include("Sorry, I didn't understand!")
+    expect(output.string).to include("Do you want to play again? y --> yes, n --> quit")
 
     expect(answer).to eq("y")
   end
