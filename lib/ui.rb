@@ -13,9 +13,10 @@ class Ui
   !
 
   NEW_LINE = "\n"
+  CLEAR_SCREEN = "\e[H\e[2J"
 
   def welcome
-    @stdout.puts "Welcome to..."
+    @stdout.puts CLEAR_SCREEN + "Welcome to..."
   end
 
   def print_logo
@@ -24,9 +25,9 @@ class Ui
 
   def print_grid(grid_size, grid)
     if grid_size == 3
-      @stdout.puts grid.small_grid_display
+      @stdout.puts CLEAR_SCREEN + grid.small_grid_display
     else
-      @stdout.puts grid.big_grid_display
+      @stdout.puts CLEAR_SCREEN + grid.big_grid_display
     end
     @stdout.puts NEW_LINE
   end
@@ -57,8 +58,8 @@ class Ui
     validated_move(move, grid)
   end
 
-  def announce_computer_moving(player_mark)
-    @stdout.puts "Player #{player_mark}'s turn:"
+  def confirm_move_position(player_mark, grid_position)
+    @stdout.puts "Player #{player_mark} moved at #{grid_position}."
     @stdout.puts NEW_LINE
   end
 

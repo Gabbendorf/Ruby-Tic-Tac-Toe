@@ -12,9 +12,10 @@ class TicTacToe
   end
 
   def run
+    print_grid_state
     while !@grid.end_game?
-      @ui.print_grid(@grid.size, @grid)
       @game.make_move(@current_player, @players, @grid)
+      print_grid_state
       @current_player = @game.switch_player(@current_player, @players)
     end
     report_verdict
@@ -26,6 +27,15 @@ class TicTacToe
   def welcome_players
     @ui.welcome
     @ui.print_logo
+  end
+
+  def print_grid_state
+    if @grid.initial_state?
+      @ui.print_grid(@grid.size, @grid)
+    else
+      @ui.print_grid(@grid.size, @grid)
+      @game.announce_move_made(@ui, @current_player, @players)
+    end
   end
 
   def report_verdict

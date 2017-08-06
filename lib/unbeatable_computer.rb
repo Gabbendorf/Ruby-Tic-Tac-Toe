@@ -9,8 +9,7 @@ class UnbeatableComputer
           }
 
   def make_move(player_mark, grid)
-    @ui.announce_computer_moving(player_mark)
-    if starting_move?(grid)
+    if grid.initial_state?
       random_move_position(grid)
     else
       best_move_position(grid)
@@ -109,10 +108,6 @@ class UnbeatableComputer
     else
       MARKS[:computer]
     end
-  end
-
-  def starting_move?(grid)
-    grid.empty_cells_count == 9
   end
 
   def random_move_position(grid)

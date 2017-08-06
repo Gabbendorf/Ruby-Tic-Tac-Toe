@@ -24,7 +24,7 @@ attr_reader :size, :cells
     last_line = prepare_grid.last.join(" |  ")
     first_2_lines[0] + first_2_lines[1] + third_line + last_line
   end
-  
+
   def place_mark(chosen_position, mark)
     @cells[corresponding_cell_for(chosen_position)] = mark
   end
@@ -67,6 +67,10 @@ attr_reader :size, :cells
 
   def empty_cells_count
     @cells.count {|cell| cell == nil}
+  end
+
+  def initial_state?
+    empty_cells_count == 9
   end
 
   private

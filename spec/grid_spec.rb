@@ -166,4 +166,14 @@ RSpec.describe Grid do
     expect(empty_cells_count).to eq(empty_cells_count_for_empty_cell)
   end
 
+  it "returns true if cells are all nil" do
+    expect(grid.initial_state?)
+  end
+
+  it "returns false if any cells are occupied" do
+    grid.place_mark("3", "O")
+
+    expect(grid.initial_state?).to eq(false)
+  end
+
 end

@@ -37,8 +37,12 @@ class Game
 
   def make_move(current_player, players, grid)
     mark = mark(current_player, players)
-    move = current_player.make_move(mark, grid)
-    grid.place_mark(move, mark)
+    @move = current_player.make_move(mark, grid)
+    grid.place_mark(@move, mark)
+  end
+
+  def announce_move_made(ui, current_player, players)
+    ui.confirm_move_position(mark(current_player, players), @move)
   end
 
   private

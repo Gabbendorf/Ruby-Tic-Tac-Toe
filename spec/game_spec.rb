@@ -10,27 +10,32 @@ RSpec.describe Game do
   let(:input) {StringIO.new("h\n3")}
   let(:ui) {Ui.new(input, output)}
   let(:game) {Game.new}
-  let(:first_player) {HumanPlayer.new(ui)}
+  let(:human_player) {HumanPlayer.new(ui)}
+
+  def players
+    {:first_player => {:player => human_player, :mark => "X"},
+     :second_player => {:player => "computer", :mark => "O"}}
+  end
 
   it "returns hash with players and their marks" do
     player_input_for_computer = "c"
     ui = Ui.new(StringIO.new(player_input_for_computer), output)
     game = Game.new
 
-    players = game.players_and_marks(first_player, ui)
-    first_player = players[:first_player][:player]
+    players = game.players_and_marks(human_player, ui)
+    human_player = players[:first_player][:player]
     first_player_mark = players[:first_player][:mark]
     second_player = players[:second_player][:player]
     second_player_mark = players[:second_player][:mark]
 
-    expect(first_player).to be_kind_of(HumanPlayer)
+    expect(human_player).to be_kind_of(HumanPlayer)
     expect(first_player_mark).to eq("X")
     expect(second_player).to be_kind_of(UnbeatableComputer)
     expect(second_player_mark).to eq("O")
   end
 
   it "creates customised grid if second player is human player" do
-    players = game.players_and_marks(first_player, ui)
+    players = game.players_and_marks(human_player, ui)
 
     grid = game.grid(ui, players)
 
@@ -41,7 +46,7 @@ RSpec.describe Game do
     player_input_for_computer = "c"
     ui = Ui.new(StringIO.new(player_input_for_computer), output)
     game = Game.new
-    players = game.players_and_marks(first_player, ui)
+    players = game.players_and_marks(human_player, ui)
 
     grid = game.grid(ui, players)
 
@@ -49,28 +54,23 @@ RSpec.describe Game do
   end
 
   it "returns starter" do
-    players = {:first_player => {:player => "human player", :mark => "X"},
-               :second_player => {:player => "computer", :mark => "O"}}
-
     starter = game.starter(players)
 
-    expect(starter).to eq("human player")
+    expect(starter).to be_kind_of(HumanPlayer)
   end
 
   it "switches player" do
-    players = {:first_player => {:player => "human player", :mark => "X"},
-               :second_player => {:player => "computer", :mark => "O"}}
     starter = game.starter(players)
 
     switched_player = game.switch_player(starter, players)
     current_player = game.switch_player(switched_player, players)
 
     expect(switched_player).to eq("computer")
-    expect(current_player).to eq("human player")
+    expect(current_player).to be_kind_of(HumanPlayer)
   end
 
   it "gets move from current player and registers corresponding mark on grid" do
-    players = game.players_and_marks(first_player, ui)
+    players = game.players_and_marks(human_player, ui)
     current_player = game.starter(players)
 
     game.make_move(current_player, players, grid)
@@ -80,13 +80,26 @@ RSpec.describe Game do
   end
 
   it "alternates mark type to start game" do
-    players = {:first_player => {:player => "human player", :mark => "X"},
-               :second_player => {:player => "computer", :mark => "O"}}
-    first_starter = "human player"
+    first_starter = players[:first_player][:player]
 
     next_starter = game.switch_player(first_starter, players)
 
     expect(next_starter).to eq("computer")
+  end
+
+  it "takes move and calls method that prints message for move made announcement" do
+    ui = double("ui")
+    current_player = double("player")
+    expect(current_player).to receive(:make_move).with("X", grid) {"3"}
+    players = {:first_player => {:player => current_player, :mark => "X"},
+     :second_player => {:player => "computer", :mark => "O"}}
+     game.make_move(current_player, players, grid)
+    current_player = players[:first_player][:player]
+    ui = Ui.new(input, output)
+
+    game.announce_move_made(ui, current_player, players)
+
+    expect(output.string).to include("Player X moved at 3.")
   end
 
 end
