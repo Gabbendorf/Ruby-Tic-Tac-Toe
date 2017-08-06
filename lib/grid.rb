@@ -70,7 +70,7 @@ attr_reader :size, :cells
   end
 
   def initial_state?
-    empty_cells_count == 9
+    empty_cells_count == grid_dimension
   end
 
   private
