@@ -24,11 +24,7 @@ class Ui
   end
 
   def print_grid(grid)
-    # if grid_size == 3
-      @stdout.puts CLEAR_SCREEN + grid.grid_display
-    # else
-      # @stdout.puts CLEAR_SCREEN + grid.big_grid_display
-    # end
+    @stdout.puts CLEAR_SCREEN + grid.grid_display
     @stdout.puts NEW_LINE
   end
 

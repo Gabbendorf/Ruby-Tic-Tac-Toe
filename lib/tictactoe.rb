@@ -47,7 +47,6 @@ class TicTacToe
     end
   end
 
-  #TODO: change way to alternate starter maybe?
   def start_new_game
     reset_game
     @current_player = @game.switch_player(@game_starter, @players)

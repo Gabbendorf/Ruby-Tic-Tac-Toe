@@ -75,7 +75,7 @@ attr_reader :size, :cells
 
   def prepare_grid
     filled_cells = @cells.map.with_index { |cell, index| cell.nil? ?
-      grid_numbers[index] : cell }
+                      grid_numbers[index] : cell }
     filled_cells.each_slice(@size).to_a
   end
 
@@ -138,4 +138,5 @@ attr_reader :size, :cells
       "\n _____________________\n"
     end
   end
+  
 end
