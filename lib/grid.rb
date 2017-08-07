@@ -7,22 +7,12 @@ attr_reader :size, :cells
     @cells = create_cells
   end
 
-  def small_grid_display
-    underlined_lines = prepare_grid[0..-2].map do |line|
-      line.join("  |  ") + "\n_____________\n"
-    end
-    last_line = prepare_grid.last.join("  |  ")
-    underlined_lines[0] + underlined_lines[1] + last_line
-  end
-
-  def big_grid_display
-    underline = "\n____________________\n"
-    first_2_lines = prepare_grid[0..-2].map {|line| line.join("  |  ") + underline}
-    shorter_number = prepare_grid[2][0] + "  |  "
-    longer_numbers = prepare_grid[2][1..3].join(" |  ")
-    third_line =  shorter_number + longer_numbers + underline
-    last_line = prepare_grid.last.join(" |  ")
-    first_2_lines[0] + first_2_lines[1] + third_line + last_line
+  def grid_display
+    top_lines = prepare_grid[0..-2].map do |line|
+                  line.map {|number| number.center(5)}.join("|")
+                end
+    last_line = prepare_grid[-1].map {|number| number.center(5)}.join("|")
+    top_lines.join(underline) + underline + last_line
   end
 
   def place_mark(chosen_position, mark)
@@ -139,5 +129,13 @@ attr_reader :size, :cells
       index -= 1
     end
     second_diagonal_row
+  end
+
+  def underline
+    if @size == 3
+      "\n  _____________\n"
+    else
+      "\n _____________________\n"
+    end
   end
 end

@@ -31,15 +31,15 @@ class TicTacToe
 
   def print_grid_state
     if @grid.initial_state?
-      @ui.print_grid(@grid.size, @grid)
+      @ui.print_grid(@grid)
     else
-      @ui.print_grid(@grid.size, @grid)
+      @ui.print_grid(@grid)
       @game.announce_move_made(@ui, @current_player, @players)
     end
   end
 
   def report_verdict
-    @ui.print_grid(@grid.size, @grid)
+    @ui.print_grid(@grid)
     if @grid.verdict == :winner
       @ui.declare_winner(@grid.winning_mark)
     else

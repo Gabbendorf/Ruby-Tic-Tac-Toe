@@ -25,20 +25,17 @@ RSpec.describe Ui do
   end
 
   it "prints 3x3 grid" do
-    grid_size = 3
+    ui.print_grid(grid)
 
-    ui.print_grid(grid_size, grid)
-
-    expect(output.string).to include("1  |  2  |  3\n_____________\n4  |  5  |  6\n_____________\n7  |  8  |  9\n")
+    expect(output.string).to include("  1  |  2  |  3  \n  _____________\n  4  |  5  |  6  \n  _____________\n  7  |  8  |  9  ")
   end
 
   it "prints 4x4 grid" do
-    grid_size = 4
     grid = Grid.new(4)
 
-    grid = ui.print_grid(grid_size, grid)
+    grid = ui.print_grid(grid)
 
-    expect(output.string).to include("1  |  2  |  3  |  4\n____________________\n5  |  6  |  7  |  8\n____________________\n9  |  10 |  11 |  12\n____________________\n13 |  14 |  15 |  16\n\n")
+    expect(output.string).to include("  1  |  2  |  3  |  4  \n _____________________\n  5  |  6  |  7  |  8  \n _____________________\n  9  | 10  | 11  | 12  \n _____________________\n 13  | 14  | 15  | 16  ")
   end
 
   it "asks to choose opponent" do
