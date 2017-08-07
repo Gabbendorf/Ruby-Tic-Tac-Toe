@@ -18,9 +18,9 @@ RSpec.describe Grid do
   end
 
   def game_with_winner
-    grid.place_mark("3", :X)
-    grid.place_mark("5", :X)
-    grid.place_mark("7", :X)
+    grid.place_mark("3", "X")
+    grid.place_mark("5", "X")
+    grid.place_mark("7", "X")
   end
 
   it "is initialized with a size" do
@@ -31,8 +31,10 @@ RSpec.describe Grid do
 
   it "is initialized with cells number corresponding to size by size number initially set as nil" do
     grid_cells = grid.cells
+    cells_count = grid.size * grid.size
 
     expect(grid_cells).to eq([nil, nil, nil, nil, nil, nil, nil, nil, nil])
+    expect(cells_count).to eq(9)
   end
 
   it "prepares display of grid size 3x3" do
@@ -43,7 +45,7 @@ RSpec.describe Grid do
 
   it "prepares display of grid size 4x4" do
     grid = Grid.new(4)
-    
+
     grid_display = grid.grid_display
 
     expect(grid_display).to eq("  1  |  2  |  3  |  4  \n _____________________\n  5  |  6  |  7  |  8  \n _____________________\n  9  | 10  | 11  | 12  \n _____________________\n 13  | 14  | 15  | 16  ")
@@ -112,7 +114,7 @@ RSpec.describe Grid do
     end
   end
 
-  describe "knows if it's draw or there's winner" do
+  describe "knows if it's draw or if there's winner" do
     it "returns :winner if someone wins" do
       game_with_winner
 
@@ -135,7 +137,7 @@ RSpec.describe Grid do
 
     winning_mark = grid.winning_mark
 
-    expect(winning_mark).to eq(:X)
+    expect(winning_mark).to eq("X")
   end
 
   it "creates new copy of grid with same cells state" do
@@ -144,7 +146,7 @@ RSpec.describe Grid do
     expect(duplicated_grid.cells).to eq(grid.cells)
   end
 
-  it "compares its cells with other cells and returns index for different cell" do
+  it "compares its cells with cells of a grid its copy and returns index for different cell" do
     grid.place_mark("3", "O")
     grid.place_mark("2", "X")
     grid.place_mark("5", "O")

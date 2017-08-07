@@ -11,10 +11,11 @@ RSpec.describe Game do
   let(:ui) {Ui.new(input, output)}
   let(:game) {Game.new}
   let(:human_player) {HumanPlayer.new(ui)}
+  let(:computer) {UnbeatableComputer.new(ui)}
 
   def players
     {:first_player => {:player => human_player, :mark => "X"},
-     :second_player => {:player => "computer", :mark => "O"}}
+     :second_player => {:player => computer, :mark => "O"}}
   end
 
   it "returns hash with players and their marks" do
@@ -34,21 +35,21 @@ RSpec.describe Game do
     expect(second_player_mark).to eq("O")
   end
 
-  it "creates customised grid if second player is human player" do
+  it "creates customised grid if opponent is human player" do
+    ui = Ui.new(StringIO.new("h\n4"), output)
     players = game.players_and_marks(human_player, ui)
 
-    grid = game.grid(ui, players)
+    grid = game.create_grid(ui, players)
 
-    expect(grid.size).to eq(3)
+    expect(grid.size).to eq(4)
   end
 
   it "creates standard grid 3x3 if second player is computer" do
     player_input_for_computer = "c"
     ui = Ui.new(StringIO.new(player_input_for_computer), output)
-    game = Game.new
     players = game.players_and_marks(human_player, ui)
 
-    grid = game.grid(ui, players)
+    grid = game.create_grid(ui, players)
 
     expect(grid.size).not_to eq(4)
   end
@@ -65,7 +66,7 @@ RSpec.describe Game do
     switched_player = game.switch_player(starter, players)
     current_player = game.switch_player(switched_player, players)
 
-    expect(switched_player).to eq("computer")
+    expect(switched_player).to be_kind_of(UnbeatableComputer)
     expect(current_player).to be_kind_of(HumanPlayer)
   end
 
@@ -79,12 +80,12 @@ RSpec.describe Game do
     expect(grid_state).to eq([nil, nil, "X", nil, nil, nil, nil, nil, nil])
   end
 
-  it "alternates mark type to start game" do
+  it "alternates player that starts game" do
     first_starter = players[:first_player][:player]
 
     next_starter = game.switch_player(first_starter, players)
 
-    expect(next_starter).to eq("computer")
+    expect(next_starter).to be_kind_of(UnbeatableComputer)
   end
 
   it "takes move and calls method that prints message for move made announcement" do
@@ -93,13 +94,13 @@ RSpec.describe Game do
     expect(current_player).to receive(:make_move).with("X", grid) {"3"}
     players = {:first_player => {:player => current_player, :mark => "X"},
      :second_player => {:player => "computer", :mark => "O"}}
-     game.make_move(current_player, players, grid)
+    game.make_move(current_player, players, grid)
     current_player = players[:first_player][:player]
     ui = Ui.new(input, output)
 
     game.announce_move_made(ui, current_player, players)
 
-    expect(output.string).to include("Player X moved at 3.")
+    expect(output.string).to include("Player X marked position 3.")
   end
 
 end

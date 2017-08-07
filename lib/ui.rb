@@ -55,7 +55,7 @@ class Ui
   end
 
   def confirm_move_position(player_mark, grid_position)
-    @stdout.puts "Player #{player_mark} moved at #{grid_position}."
+    @stdout.puts "Player #{player_mark} marked position #{grid_position}."
     @stdout.puts NEW_LINE
   end
 

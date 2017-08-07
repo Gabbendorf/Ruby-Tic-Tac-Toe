@@ -43,17 +43,16 @@ RSpec.describe TicTacToe do
       input_to_play_again = "y\n"
       input_to_quit = "n"
       first_game_inputs = "h\n3\n1\n4\n2\n5\n3\n"
-      second_game_inputs = "h\n3\n3\n2\n5\n1\n4\n7\n8\n6\n9\n"
-      input = StringIO.new(first_game_inputs + input_to_play_again + second_game_inputs + input_to_quit)
+      draw_game_inputs = "h\n3\n3\n2\n5\n1\n4\n7\n8\n6\n9\n"
+      input = StringIO.new(first_game_inputs + input_to_play_again + draw_game_inputs + input_to_quit)
       ui = Ui.new(input, output)
       first_player = HumanPlayer.new(ui)
       new_game = TicTacToe.new(ui, game, first_player)
 
       new_game.run
 
-      second_game_verdict = grid.verdict
-      expect(output.string).to include("Do you want to play again? y --> yes, n --> quit")
-      expect(second_game_verdict).to eq(:draw)
+      draw_game_verdict = grid.verdict
+      expect(draw_game_verdict).to eq(:draw)
     end
 
     it "runs 2 games human player vs. computer, computer starting at 2nd game" do
@@ -69,7 +68,6 @@ RSpec.describe TicTacToe do
 
       human_player_mark = "X"
       second_game_winning_mark = grid.winning_mark
-      expect(output.string).to include("Do you want to play again? y --> yes, n --> quit")
       expect(second_game_winning_mark).not_to equal(human_player_mark)
     end
   end

@@ -58,7 +58,7 @@ RSpec.describe Ui do
     expect(opponent_input).to eq("h")
   end
 
-  it "asks to choose grid size and returns it" do
+  it "asks to choose grid size and returns integer" do
     ui = Ui.new(StringIO.new("3"), output)
 
     grid_size = ui.choose_grid_size
@@ -67,7 +67,7 @@ RSpec.describe Ui do
     expect(grid_size).to eq(3)
   end
 
-  it "apologizes and asks to repeat grid size choice if input is wrong" do
+  it "apologizes, asks to repeat grid size choice if input is wrong and returns integer" do
     ui = Ui.new(StringIO.new("5\n3"), output)
 
     grid_size = ui.choose_grid_size
@@ -89,7 +89,7 @@ RSpec.describe Ui do
     expect(move_position).to eq("1")
   end
 
-  it "asks to make move and returns validated move for invalid input" do
+  it "asks to make move again if input is wrong and returns it validated" do
     ui = Ui.new(StringIO.new("11\n1"), output)
     player_mark = "X"
 
@@ -99,7 +99,7 @@ RSpec.describe Ui do
     expect(move_position).to eq("1")
   end
 
-  it "asks to make move and returns validated move for already chosen move" do
+  it "asks to make move again if position is occupied and returns it validated" do
     player_mark = "X"
     grid.place_mark("1", player_mark)
     ui = Ui.new(StringIO.new("1\n2"), output)
@@ -110,13 +110,13 @@ RSpec.describe Ui do
     expect(move_position).to eq("2")
   end
 
-  it "confirms move of current player" do
+  it "confirms current player made move and where" do
     player_mark = "X"
     grid_position = "3"
 
     ui.confirm_move_position(player_mark, grid_position)
 
-    expect(output.string).to eq("Player X moved at 3.\n\n")
+    expect(output.string).to eq("Player X marked position 3.\n\n")
   end
 
   it "declares a winner" do
@@ -142,7 +142,7 @@ RSpec.describe Ui do
     expect(answer).to eq("y")
   end
 
-  it "apologizes and asks to answer y or n again if input is wrong" do
+  it "apologizes and asks again to start new game if input is wrong" do
     ui = Ui.new(StringIO.new("g\ny"), output)
 
     answer = ui.ask_to_play_again

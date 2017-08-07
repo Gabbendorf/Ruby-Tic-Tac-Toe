@@ -1,8 +1,6 @@
 require 'spec_helper'
 require_relative '../lib/opponent_factory'
 require_relative '../lib/ui'
-require_relative '../lib/human_player'
-require_relative '../lib/unbeatable_computer'
 
 RSpec.describe OpponentFactory do
 

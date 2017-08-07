@@ -8,7 +8,7 @@ RSpec.describe HumanPlayer do
   let(:output) {StringIO.new}
   let(:grid) {Grid.new(3)}
 
-  it "returns valid move for empty grid position to place mark on chosen" do
+  it "returns valid move for empty grid position chosen to place mark on" do
     ui = Ui.new(StringIO.new("3"), output)
     human_player = HumanPlayer.new(ui)
     mark = "X"

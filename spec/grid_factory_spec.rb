@@ -4,14 +4,11 @@ require_relative '../lib/ui'
 
 RSpec.describe GridFactory do
 
-  let(:output) {StringIO.new}
-  let(:ui) {Ui.new(StringIO.new, output)}
+  let(:input) {StringIO.new("4")}
+  let(:ui) {Ui.new(input, StringIO.new)}
   let(:grid_factory) {GridFactory.new}
 
   it "creates customised grid from user size choice" do
-    input = StringIO.new("4")
-    ui = Ui.new(input, output)
-
     grid = grid_factory.customised_grid(ui)
 
     expect(grid).to have_attributes(:size => 4)

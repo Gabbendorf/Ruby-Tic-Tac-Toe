@@ -138,5 +138,5 @@ attr_reader :size, :cells
       "\n _____________________\n"
     end
   end
-  
+
 end

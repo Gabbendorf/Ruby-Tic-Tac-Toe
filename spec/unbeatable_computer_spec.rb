@@ -9,7 +9,7 @@ RSpec.describe UnbeatableComputer do
   let(:ui) {Ui.new(StringIO.new, StringIO.new)}
   let(:computer) {UnbeatableComputer.new(ui)}
 
-  it "returns duplicated grids each with current player mark placed in different empty cell" do
+  it "returns copies of grid state each with computer's mark placed on different empty cell" do
     grid.place_mark("3", "X")
     grid.place_mark("5", "O")
     grid.place_mark("6", "X")
@@ -23,16 +23,17 @@ RSpec.describe UnbeatableComputer do
     expect(sixth_duplicated_grid.cells).to eq([nil, nil, "X", nil, "O", "X", nil, nil, computer_mark])
   end
 
-  it "returns copies of grid" do
+  it "returns copies of grid for each of grid empty cells" do
     grid.place_mark("3", "X")
     grid.place_mark("5", "O")
     grid.place_mark("6", "X")
+    grid_empty_cells_count = grid.empty_cells_count
 
     grid_copies = computer.copies_of_grid(grid)
 
     first_grid_copy = grid_copies[0]
-    expect(grid_copies.size).to eq(6)
     expect(first_grid_copy.cells).to eq([nil, nil, "X", nil, "O", "X", nil, nil, nil])
+    expect(grid_copies.size).to eq(grid_empty_cells_count)
   end
 
   describe "returns score for possible move according to game result prediction after minimax application" do
@@ -73,7 +74,7 @@ RSpec.describe UnbeatableComputer do
       expect(score).to eq(-10)
     end
 
-    it "returns -10 if computer doesn't prevent opponent from winning in next game state" do
+    it "returns -10 if computer doesn't prevent opponent from winning in next game states" do
       opponent_mark = "X"
       computer_mark = "O"
       grid.place_mark("1", opponent_mark)
@@ -104,7 +105,7 @@ RSpec.describe UnbeatableComputer do
       expect(score).to eq(0)
     end
 
-    it "returns 0 if in next level of game states nobody can win" do
+    it "returns 0 if in next game state nobody can win" do
       computer_mark = "O"
       possible_moves = computer.grid_copies_with_possible_moves(grid, computer_mark)
       first_move = possible_moves[0]
@@ -115,7 +116,7 @@ RSpec.describe UnbeatableComputer do
     end
   end
 
-  it "returns hash with updated grid copies and scores as value, and move positions as key" do
+  it "returns hash with grid copies showing possible moves as key and their score as value" do
     grid.place_mark("3", "O")
     grid.place_mark("2", "X")
     grid.place_mark("5", "O")
@@ -124,15 +125,15 @@ RSpec.describe UnbeatableComputer do
     grid.place_mark("7", "X")
     grid.place_mark("8", "O")
     grid.place_mark("6", "X")
-    computer_mark = "O"
-    possible_scores = [-10, 0, 10]
+    possible_computer_move = "O"
+    score_for_draw = 0
 
-    moves_and_scores = computer.possible_moves_and_scores(grid)
+    possible_moves_and_scores = computer.possible_moves_and_scores(grid)
 
-    last_possible_move = moves_and_scores.keys[0].cells.last
-    move_score = moves_and_scores.values[0]
-    expect(last_possible_move).to eq(computer_mark)
-    expect(possible_scores).to include(move_score)
+    grid_for_last_possible_move = possible_moves_and_scores.keys[0].cells
+    expect(grid_for_last_possible_move).to eq(["X", "X", "O", "O", "O", "X", "X", "O", possible_computer_move])
+    move_score = possible_moves_and_scores.values[0]
+    expect(move_score).to eq(score_for_draw)
   end
 
   it "returns move with biggest score" do
@@ -145,31 +146,38 @@ RSpec.describe UnbeatableComputer do
     grid.place_mark("8", "O")
     ideal_move = "6"
 
-    chosen_move = computer.best_move_position(grid)
+    move_with_highest_score = computer.best_move_position(grid)
 
-    expect(chosen_move).to eq(ideal_move)
+    expect(move_with_highest_score).to eq(ideal_move)
   end
 
-  it "returns random move for first move when starting" do
-    possible_moves = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
+  it "returns random move for first move if game at initial state" do
     computer_mark = "O"
+    computer = double("computer")
+    grid = double("grid")
+    expect(grid).to receive(:initial_state?) {true}
+    expect(grid).to receive(:grid_numbers) {["1", "1", "1"]}
+    computer = UnbeatableComputer.new(ui)
 
-    move = computer.make_move(computer_mark, grid)
+    random_move = computer.make_move(computer_mark, grid)
 
-    expect(possible_moves).to include(move)
+    expect(random_move).to eq("1")
   end
 
-  it "returns grid position number for best move chosen" do
+  it "returns grid position number for best move chosen if game is not at initial state" do
+    computer_mark = "O"
     grid.place_mark("3", "O")
     grid.place_mark("2", "X")
     grid.place_mark("5", "O")
     grid.place_mark("1", "X")
-    possible_moves = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
-    computer_mark = "O"
+    grid.place_mark("4", "O")
+    grid.place_mark("7", "X")
+    grid.place_mark("8", "O")
+    move_with_highest_score = "6"
 
     move = computer.make_move(computer_mark, grid)
 
-    expect(possible_moves).to include(move)
+    expect(move).to eq(move_with_highest_score)
   end
 
 end
