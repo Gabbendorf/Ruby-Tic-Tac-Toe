@@ -1,5 +1,6 @@
 require_relative 'opponent_factory'
 require_relative 'grid_factory'
+require_relative 'marks'
 
 class Game
 
@@ -9,9 +10,9 @@ class Game
 
   def players_and_marks(first_player, ui)
     {:first_player => {:player => first_player,
-                       :mark => "X"},
+                      :mark => Marks::USER},
     :second_player => {:player => opponent(ui),
-                       :mark => "O"}
+                      :mark => Marks::OPPONENT}
     }
   end
 

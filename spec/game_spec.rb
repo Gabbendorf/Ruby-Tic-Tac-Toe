@@ -14,8 +14,8 @@ RSpec.describe Game do
   let(:computer) {UnbeatableComputer.new(ui)}
 
   def players
-    {:first_player => {:player => human_player, :mark => "X"},
-     :second_player => {:player => computer, :mark => "O"}}
+    {:first_player => {:player => human_player, :mark => Marks::USER},
+     :second_player => {:player => computer, :mark => Marks::OPPONENT}}
   end
 
   it "returns hash with players and their marks" do
@@ -77,7 +77,7 @@ RSpec.describe Game do
     game.make_move(current_player, players, grid)
 
     grid_state = grid.cells
-    expect(grid_state).to eq([nil, nil, "X", nil, nil, nil, nil, nil, nil])
+    expect(grid_state).to eq([nil, nil, players[:first_player][:mark], nil, nil, nil, nil, nil, nil])
   end
 
   it "alternates player that starts game" do
@@ -92,8 +92,8 @@ RSpec.describe Game do
     ui = double("ui")
     current_player = double("player")
     expect(current_player).to receive(:make_move).with("X", grid) {"3"}
-    players = {:first_player => {:player => current_player, :mark => "X"},
-     :second_player => {:player => "computer", :mark => "O"}}
+    players = {:first_player => {:player => current_player, :mark => Marks::USER},
+     :second_player => {:player => "computer", :mark => Marks::OPPONENT}}
     game.make_move(current_player, players, grid)
     current_player = players[:first_player][:player]
     ui = Ui.new(input, output)

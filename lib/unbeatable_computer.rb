@@ -1,11 +1,13 @@
+require_relative 'marks'
+
 class UnbeatableComputer
 
   def initialize(ui)
     @ui = ui
   end
 
-  MARKS = {:computer => "O",
-           :opponent => "X"
+  MARKS = {:computer => Marks::OPPONENT,
+           :opponent => Marks::USER
           }
 
   def make_move(player_mark, grid)
