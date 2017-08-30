@@ -6,8 +6,8 @@ class UnbeatableComputer
     @ui = ui
   end
 
-  MARKS = {:computer => Marks::OPPONENT,
-           :opponent => Marks::USER
+  MARKS = {:computer => Marks::O,
+           :opponent => Marks::X
           }
 
   def make_move(player_mark, grid)

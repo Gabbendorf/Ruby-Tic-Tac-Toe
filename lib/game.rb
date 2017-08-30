@@ -6,9 +6,9 @@ class Game
 
   def players_and_marks(first_player, ui)
     {:first_player => {:player => first_player,
-                      :mark => Marks::USER},
+                      :mark => Marks::X},
     :second_player => {:player => opponent(ui),
-                      :mark => Marks::OPPONENT}
+                      :mark => Marks::O}
     }
   end
 

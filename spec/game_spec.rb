@@ -14,8 +14,8 @@ RSpec.describe Game do
   let(:computer) {UnbeatableComputer.new(ui)}
 
   def players
-    {:first_player => {:player => human_player, :mark => Marks::USER},
-     :second_player => {:player => computer, :mark => Marks::OPPONENT}}
+    {:first_player => {:player => human_player, :mark => Marks::X},
+     :second_player => {:player => computer, :mark => Marks::O}}
   end
 
   it "returns players and their marks" do
@@ -79,8 +79,8 @@ RSpec.describe Game do
     ui = double("ui")
     current_player = double("player")
     expect(current_player).to receive(:make_move).with("X", grid) {"3"}
-    players = {:first_player => {:player => current_player, :mark => Marks::USER},
-     :second_player => {:player => "computer", :mark => Marks::OPPONENT}}
+    players = {:first_player => {:player => current_player, :mark => Marks::X},
+               :second_player => {:player => "computer", :mark => Marks::O}}
     game.make_move(current_player, players, grid)
     current_player = players[:first_player][:player]
     ui = Ui.new(input, output)

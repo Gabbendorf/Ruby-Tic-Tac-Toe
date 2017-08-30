@@ -1,7 +1,7 @@
 module Marks
 
-  USER = "X"
+  X = "X"
 
-  OPPONENT = "O"
+  O = "O"
 
 end
