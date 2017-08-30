@@ -6,7 +6,7 @@ class TicTacToe
     @first_player = user
     @intro = welcome_players
     @players = @game.players_and_marks(@first_player, @ui)
-    @grid = @game.create_grid(@ui, @players)
+    @grid = @game.create_grid(@ui)
     @current_player = @game.starter(@players)
     @game_starter = @current_player
   end
@@ -54,7 +54,7 @@ class TicTacToe
 
   def reset_game
     @players = @game.players_and_marks(@first_player, @ui)
-    @grid = @game.create_grid(@ui, @players)
+    @grid = @game.create_grid(@ui)
   end
 
 end

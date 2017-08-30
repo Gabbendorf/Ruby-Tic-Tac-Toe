@@ -8,14 +8,18 @@ RSpec.describe GridFactory do
   let(:ui) {Ui.new(input, StringIO.new)}
   let(:grid_factory) {GridFactory.new}
 
-  it "creates customised grid from user size choice" do
-    grid = grid_factory.customised_grid(ui)
+  it "creates customised grid for human player as opponent" do
+    opponent_choice = "h"
+
+    grid = grid_factory.create_grid(ui, opponent_choice)
 
     expect(grid).to have_attributes(:size => 4)
   end
 
-  it "creates standard grid 3x3" do
-    grid = grid_factory.standard_grid
+  it "creates standard grid 3x3 for computer as opponent" do
+    opponent_choice = "c"
+
+    grid = grid_factory.create_grid(ui, opponent_choice)
 
     expect(grid).to have_attributes(:size => 3)
   end
