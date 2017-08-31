@@ -18,6 +18,10 @@ class UnbeatableComputer
     end
   end
 
+  def grid_size
+    3
+  end
+
   def best_move_position(grid)
     move_position = best_random_grid(grid).different_cell_position(grid.cells)
     grid_position_for(move_position)

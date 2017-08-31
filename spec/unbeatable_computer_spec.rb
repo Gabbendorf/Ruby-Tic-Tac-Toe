@@ -171,5 +171,9 @@ RSpec.describe UnbeatableComputer do
 
     expect(move).to eq(move_with_highest_score)
   end
+  
+  it "returns standard grid size 3" do
+    expect(computer.grid_size).to eq(3)
+  end
 
 end

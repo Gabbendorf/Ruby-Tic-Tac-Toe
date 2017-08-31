@@ -12,8 +12,8 @@ class Game
     }
   end
 
-  def create_grid(ui)
-    GridFactory.new.create_grid(ui, @opponent_choice)
+  def create_grid(players)
+    GridFactory.new.create_grid(second_player(players))
   end
 
   def starter(players)

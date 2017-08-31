@@ -36,7 +36,7 @@ RSpec.describe Game do
   end
 
   it "creates grid" do
-    new_grid = game.create_grid(ui)
+    new_grid = game.create_grid(players)
 
     expect(new_grid).to have_attributes(:size => 3)
   end
