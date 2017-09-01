@@ -22,9 +22,28 @@ class UnbeatableComputer
     3
   end
 
+  private
+
+  def random_move_position(grid)
+    grid.grid_numbers.sample
+  end
+
   def best_move_position(grid)
     move_position = best_random_grid(grid).different_cell_position(grid.cells)
     grid_position_for(move_position)
+  end
+
+  def grid_position_for(cell_position)
+    (cell_position + 1).to_s
+  end
+
+  def best_random_grid(grid)
+    shuffled_moves = Hash[possible_moves_and_scores(grid).to_a.shuffle]
+    shuffled_moves.key(max_value(grid))
+  end
+
+  def max_value(grid)
+    possible_moves_and_scores(grid).values.max
   end
 
   def possible_moves_and_scores(grid)
@@ -34,14 +53,6 @@ class UnbeatableComputer
       moves_and_scores[possible_grid] = move_score(possible_grid, MARKS[:computer])
     end
     moves_and_scores
-  end
-
-  def move_score(duplicated_grid, player_mark)
-    if duplicated_grid.end_game?
-      grid_final_state_score(duplicated_grid)
-    else
-      minimax_score(duplicated_grid, player_mark)
-    end
   end
 
   def grid_copies_with_possible_moves(grid, player_mark)
@@ -55,11 +66,17 @@ class UnbeatableComputer
     end
   end
 
+  def move_score(duplicated_grid, player_mark)
+    if duplicated_grid.end_game?
+      grid_final_state_score(duplicated_grid)
+    else
+      minimax_score(duplicated_grid, player_mark)
+    end
+  end
+
   def copies_of_grid(grid)
     grid.empty_cells_count.times.map {grid.duplicate_grid}
   end
-
-  private
 
   def grid_final_state_score(duplicated_grid)
     if duplicated_grid.winning_mark == MARKS[:computer]
@@ -78,14 +95,6 @@ class UnbeatableComputer
     min_or_max_value(player_mark, moves_and_scores)
   end
 
-  def min_or_max_value(player_mark, moves_and_scores)
-    if player_mark == MARKS[:computer]
-      moves_and_scores.values.max
-    else
-      moves_and_scores.values.min
-    end
-  end
-
   def get_moves_with_score(grid_copies, duplicated_grid, player_mark)
     moves_and_scores = {}
     grid_copies.each do |grid_copy|
@@ -93,6 +102,14 @@ class UnbeatableComputer
       break if grid_final_state_found?(moves_and_scores, grid_copy, player_mark)
     end
     moves_and_scores
+  end
+
+  def min_or_max_value(player_mark, moves_and_scores)
+    if player_mark == MARKS[:computer]
+      moves_and_scores.values.max
+    else
+      moves_and_scores.values.min
+    end
   end
 
   def grid_final_state_found?(moves_and_scores, grid_copy, player_mark)
@@ -114,23 +131,6 @@ class UnbeatableComputer
     else
       MARKS[:computer]
     end
-  end
-
-  def random_move_position(grid)
-    grid.grid_numbers.sample
-  end
-
-  def best_random_grid(grid)
-    shuffled_moves = Hash[possible_moves_and_scores(grid).to_a.shuffle]
-    shuffled_moves.key(max_value(grid))
-  end
-
-  def max_value(grid)
-    possible_moves_and_scores(grid).values.max
-  end
-
-  def grid_position_for(cell_position)
-    (cell_position + 1).to_s
   end
 
 end
