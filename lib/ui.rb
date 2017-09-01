@@ -1,3 +1,5 @@
+require_relative 'grid_display'
+
 class Ui
 
   def initialize(stdin, stdout)
@@ -24,7 +26,7 @@ class Ui
   end
 
   def print_grid(grid)
-    @stdout.puts CLEAR_SCREEN + grid.grid_display
+    @stdout.puts CLEAR_SCREEN + GridDisplay.new.display(grid)
     @stdout.puts NEW_LINE
   end
 
