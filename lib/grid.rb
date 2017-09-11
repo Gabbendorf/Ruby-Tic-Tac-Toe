@@ -47,12 +47,19 @@ attr_reader :size, :cells
      end
   end
 
-  def empty_cells_count
-    @cells.count {|cell| cell == nil}
-  end
-
   def initial_state?
     empty_cells_count == grid_dimension
+  end
+
+  def create_copies_with_possible_moves(player_mark)
+    position = 1
+    copies_of_grid.each do |duplicated_grid|
+      while !duplicated_grid.empty_position?(position)
+        position += 1
+      end
+      duplicated_grid.place_mark(position, player_mark)
+      position += 1
+    end
   end
 
   private
@@ -115,6 +122,14 @@ attr_reader :size, :cells
       index -= 1
     end
     second_diagonal_row
+  end
+
+  def copies_of_grid
+   empty_cells_count.times.map {duplicate_grid}
+  end
+
+  def empty_cells_count
+    @cells.count {|cell| cell == nil}
   end
 
 end

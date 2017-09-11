@@ -147,14 +147,6 @@ RSpec.describe Grid do
     expect(different_cell_position).to eq(5)
   end
 
-  it "returns count of empty cells" do
-    empty_cells_count_for_empty_cell = 9
-
-    empty_cells_count = grid.empty_cells_count
-
-    expect(empty_cells_count).to eq(empty_cells_count_for_empty_cell)
-  end
-
   it "returns true if cells are all nil" do
     expect(grid.initial_state?)
   end
@@ -163,6 +155,19 @@ RSpec.describe Grid do
     grid.place_mark("3", "O")
 
     expect(grid.initial_state?).to eq(false)
+  end
+
+  it "returns copies of grid state each with mark placed on different empty cell" do
+    grid.place_mark("3", "X")
+    grid.place_mark("5", "O")
+    grid.place_mark("6", "X")
+
+    grids_with_moves = grid.create_copies_with_possible_moves(:mark)
+    first_duplicated_grid = grids_with_moves[0]
+    sixth_duplicated_grid = grids_with_moves[5]
+
+    expect(first_duplicated_grid.cells).to eq([:mark, nil, "X", nil, "O", "X", nil, nil, nil])
+    expect(sixth_duplicated_grid.cells).to eq([nil, nil, "X", nil, "O", "X", nil, nil, :mark])
   end
 
 end

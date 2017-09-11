@@ -9,7 +9,8 @@ RSpec.describe UnbeatableComputer do
   let(:ui) {Ui.new(StringIO.new, StringIO.new)}
   let(:computer) {UnbeatableComputer.new(ui)}
 
-  MARKS = UnbeatableComputer::MARKS
+  COMPUTER_MARK = Marks::O
+  OPPONENT_MARK = Marks::X
 
   it "returns random move for first move if game at initial state" do
     computer = double("computer")
@@ -18,22 +19,22 @@ RSpec.describe UnbeatableComputer do
     expect(grid).to receive(:grid_numbers) {["1", "1", "1"]}
     computer = UnbeatableComputer.new(ui)
 
-    random_move = computer.make_move(MARKS[:computer], grid)
+    random_move = computer.make_move(OPPONENT_MARK, grid)
 
     expect(random_move).to eq("1")
   end
 
   it "returns grid position number for best move chosen if game is not at initial state" do
-    grid.place_mark("3", MARKS[:computer])
-    grid.place_mark("2", MARKS[:opponent])
-    grid.place_mark("5", MARKS[:computer])
-    grid.place_mark("1", MARKS[:opponent])
-    grid.place_mark("4", MARKS[:computer])
-    grid.place_mark("7", MARKS[:opponent])
-    grid.place_mark("8", MARKS[:computer])
+    grid.place_mark("3", COMPUTER_MARK)
+    grid.place_mark("2", OPPONENT_MARK)
+    grid.place_mark("5", COMPUTER_MARK)
+    grid.place_mark("1", OPPONENT_MARK)
+    grid.place_mark("4", COMPUTER_MARK)
+    grid.place_mark("7", OPPONENT_MARK)
+    grid.place_mark("8", COMPUTER_MARK)
     move_with_highest_score = "6"
 
-    move = computer.make_move(MARKS[:computer], grid)
+    move = computer.make_move(COMPUTER_MARK, grid)
 
     expect(move).to eq(move_with_highest_score)
   end
