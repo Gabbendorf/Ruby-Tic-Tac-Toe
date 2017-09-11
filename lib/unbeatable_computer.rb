@@ -3,8 +3,6 @@ require_relative 'score_calculator'
 
 class UnbeatableComputer
 
-  COMPUTER_MARK = Marks::O
-
   def initialize(ui)
     @ui = ui
   end
@@ -46,10 +44,10 @@ class UnbeatableComputer
   end
 
   def possible_moves_and_scores(grid)
-    grids_with_moves = grid.create_copies_with_possible_moves(COMPUTER_MARK)
+    grids_with_moves = grid.create_copies_with_possible_moves(Marks::COMPUTER_MARK)
     moves_and_scores = {}
     grids_with_moves.each do |possible_grid|
-      moves_and_scores[possible_grid] = ScoreCalculator.new.score_for(possible_grid, COMPUTER_MARK)
+      moves_and_scores[possible_grid] = ScoreCalculator.new.score_for(possible_grid, Marks::COMPUTER_MARK)
     end
     moves_and_scores
   end

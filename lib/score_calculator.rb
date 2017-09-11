@@ -2,9 +2,6 @@ require_relative 'marks'
 
 class ScoreCalculator
 
-  COMPUTER_MARK = Marks::O
-  OPPONENT_MARK = Marks::X
-
   def score_for(duplicated_grid, player_mark)
     if duplicated_grid.end_game?
       grid_final_state_score(duplicated_grid)
@@ -16,9 +13,9 @@ class ScoreCalculator
   private
 
   def grid_final_state_score(duplicated_grid)
-    if duplicated_grid.winning_mark == COMPUTER_MARK
+    if duplicated_grid.winning_mark == Marks::COMPUTER_MARK
       10
-    elsif duplicated_grid.winning_mark == OPPONENT_MARK
+    elsif duplicated_grid.winning_mark == Marks::OPPONENT_MARK
       -10
     elsif duplicated_grid.draw?
       0
@@ -42,7 +39,7 @@ class ScoreCalculator
   end
 
   def min_or_max_value(player_mark, moves_and_scores)
-    if player_mark == COMPUTER_MARK
+    if player_mark == Marks::COMPUTER_MARK
       moves_and_scores.values.max
     else
       moves_and_scores.values.min
@@ -55,11 +52,11 @@ class ScoreCalculator
   end
 
   def best_move_found(moves_and_scores, grid_copy, player_mark)
-    moves_and_scores[grid_copy] == 10 && player_mark == COMPUTER_MARK
+    moves_and_scores[grid_copy] == 10 && player_mark == Marks::COMPUTER_MARK
   end
 
   def worst_move_found(moves_and_scores, grid_copy, player_mark)
-    moves_and_scores[grid_copy] == -10 && player_mark == OPPONENT_MARK
+    moves_and_scores[grid_copy] == -10 && player_mark == Marks::OPPONENT_MARK
   end
 
 end
