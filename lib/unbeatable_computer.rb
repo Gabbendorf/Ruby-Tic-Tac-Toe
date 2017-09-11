@@ -30,10 +30,6 @@ class UnbeatableComputer
     grid_position_for(move_position)
   end
 
-  def grid_position_for(cell_position)
-    (cell_position + 1).to_s
-  end
-
   def best_random_grid(grid)
     shuffled_moves = Hash[possible_moves_and_scores(grid).to_a.shuffle]
     shuffled_moves.key(max_value(grid))
@@ -50,6 +46,10 @@ class UnbeatableComputer
       moves_and_scores[possible_grid] = ScoreCalculator.new.score_for(possible_grid, Marks::COMPUTER_MARK)
     end
     moves_and_scores
+  end
+
+  def grid_position_for(cell_position)
+    (cell_position + 1).to_s
   end
 
 end
