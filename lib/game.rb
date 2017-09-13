@@ -40,6 +40,8 @@ class Game
 
   private
 
+  attr_reader :opponent_choice
+
   def first_player(players)
     players[:first_player][:player]
   end
@@ -49,8 +51,8 @@ class Game
   end
 
   def opponent(ui)
-    @opponent_choice = ui.choose_opponent
-    OpponentFactory.new(ui).create_opponent(@opponent_choice)
+    opponent_choice = ui.choose_opponent
+    OpponentFactory.new(ui).create_opponent(opponent_choice)
   end
 
   def mark(current_player, players)

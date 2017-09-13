@@ -8,11 +8,11 @@ attr_reader :size, :cells
   end
 
   def place_mark(chosen_position, mark)
-    @cells[corresponding_cell_for(chosen_position)] = mark
+    cells[corresponding_cell_for(chosen_position)] = mark
   end
 
   def empty_position?(grid_position)
-    @cells[corresponding_cell_for(grid_position)] == nil
+    cells[corresponding_cell_for(grid_position)] == nil
   end
 
   def grid_numbers
@@ -36,13 +36,13 @@ attr_reader :size, :cells
   end
 
   def duplicate_grid
-    grid_copy = Grid.new(@size)
-    grid_copy.instance_variable_set(:@cells, @cells.dup)
+    grid_copy = Grid.new(size)
+    grid_copy.instance_variable_set(:@cells, cells.dup)
     grid_copy
   end
 
   def different_cell_position(grid_copy_cells)
-    @cells.zip(grid_copy_cells).select.find_index do |grid_cell, copy_cell|
+    cells.zip(grid_copy_cells).select.find_index do |grid_cell, copy_cell|
        grid_cell != copy_cell
      end
   end
@@ -69,7 +69,7 @@ attr_reader :size, :cells
   end
 
   def grid_dimension
-    @size * @size
+    size * size
   end
 
   def all_rows
@@ -77,7 +77,7 @@ attr_reader :size, :cells
   end
 
   def horizontal_rows
-    @cells.map.each_slice(@size).to_a
+    cells.map.each_slice(size).to_a
   end
 
   def vertical_rows
@@ -116,7 +116,7 @@ attr_reader :size, :cells
 
   def second_diagonal_row
     second_diagonal_row = []
-    index = @size - 1
+    index = size - 1
     horizontal_rows.each do |row|
       second_diagonal_row.push(row[index])
       index -= 1
@@ -129,7 +129,7 @@ attr_reader :size, :cells
   end
 
   def empty_cells_count
-    @cells.count {|cell| cell == nil}
+    cells.count {|cell| cell == nil}
   end
 
 end
