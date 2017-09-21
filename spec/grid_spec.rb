@@ -37,20 +37,6 @@ RSpec.describe Grid do
     expect(cells_count).to eq(9)
   end
 
-  it "prepares display of grid size 3x3" do
-    grid_display = grid.grid_display
-
-    expect(grid_display).to eq("  1  |  2  |  3  \n  _____________\n  4  |  5  |  6  \n  _____________\n  7  |  8  |  9  ")
-  end
-
-  it "prepares display of grid size 4x4" do
-    grid = Grid.new(4)
-
-    grid_display = grid.grid_display
-
-    expect(grid_display).to eq("  1  |  2  |  3  |  4  \n _____________________\n  5  |  6  |  7  |  8  \n _____________________\n  9  | 10  | 11  | 12  \n _____________________\n 13  | 14  | 15  | 16  ")
-  end
-
   it "places mark on grid" do
     mark = "X"
     grid_position = "3"
@@ -161,14 +147,6 @@ RSpec.describe Grid do
     expect(different_cell_position).to eq(5)
   end
 
-  it "returns count of empty cells" do
-    empty_cells_count_for_empty_cell = 9
-
-    empty_cells_count = grid.empty_cells_count
-
-    expect(empty_cells_count).to eq(empty_cells_count_for_empty_cell)
-  end
-
   it "returns true if cells are all nil" do
     expect(grid.initial_state?)
   end
@@ -177,6 +155,19 @@ RSpec.describe Grid do
     grid.place_mark("3", "O")
 
     expect(grid.initial_state?).to eq(false)
+  end
+
+  it "returns copies of grid state each with mark placed on different empty cell" do
+    grid.place_mark("3", "X")
+    grid.place_mark("5", "O")
+    grid.place_mark("6", "X")
+
+    grids_with_moves = grid.create_copies_with_possible_moves(:mark)
+    first_duplicated_grid = grids_with_moves[0]
+    sixth_duplicated_grid = grids_with_moves[5]
+
+    expect(first_duplicated_grid.cells).to eq([:mark, nil, "X", nil, "O", "X", nil, nil, nil])
+    expect(sixth_duplicated_grid.cells).to eq([nil, nil, "X", nil, "O", "X", nil, nil, :mark])
   end
 
 end

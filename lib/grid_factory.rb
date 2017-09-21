@@ -1,14 +1,10 @@
 require_relative 'grid'
 
-class GridFactory
-
-  def customised_grid(ui)
-    grid_size = ui.choose_grid_size
-    Grid.new(grid_size)
-  end
-
-  def standard_grid
-    Grid.new(3)
-  end
+class GridFactory 
+  
+   def create_grid(opponent_player)
+     grid_size = opponent_player.grid_size
+     Grid.new(grid_size)
+   end
 
 end

@@ -7,18 +7,18 @@ RSpec.describe Game do
 
   let(:grid) {Grid.new(3)}
   let(:output) {StringIO.new}
-  let(:input) {StringIO.new("h\n3")}
+  let(:input) {StringIO.new("h\n4")}
   let(:ui) {Ui.new(input, output)}
   let(:game) {Game.new}
   let(:human_player) {HumanPlayer.new(ui)}
   let(:computer) {UnbeatableComputer.new(ui)}
 
   def players
-    {:first_player => {:player => human_player, :mark => "X"},
-     :second_player => {:player => computer, :mark => "O"}}
+    {:first_player => {:player => human_player, :mark => Marks::X},
+     :second_player => {:player => computer, :mark => Marks::O}}
   end
 
-  it "returns hash with players and their marks" do
+  it "returns players and their marks" do
     player_input_for_computer = "c"
     ui = Ui.new(StringIO.new(player_input_for_computer), output)
     game = Game.new
@@ -35,23 +35,10 @@ RSpec.describe Game do
     expect(second_player_mark).to eq("O")
   end
 
-  it "creates customised grid if opponent is human player" do
-    ui = Ui.new(StringIO.new("h\n4"), output)
-    players = game.players_and_marks(human_player, ui)
+  it "creates grid" do
+    new_grid = game.create_grid(players)
 
-    grid = game.create_grid(ui, players)
-
-    expect(grid.size).to eq(4)
-  end
-
-  it "creates standard grid 3x3 if second player is computer" do
-    player_input_for_computer = "c"
-    ui = Ui.new(StringIO.new(player_input_for_computer), output)
-    players = game.players_and_marks(human_player, ui)
-
-    grid = game.create_grid(ui, players)
-
-    expect(grid.size).not_to eq(4)
+    expect(new_grid).to have_attributes(:size => 3)
   end
 
   it "returns starter" do
@@ -77,7 +64,7 @@ RSpec.describe Game do
     game.make_move(current_player, players, grid)
 
     grid_state = grid.cells
-    expect(grid_state).to eq([nil, nil, "X", nil, nil, nil, nil, nil, nil])
+    expect(grid_state).to eq([nil, nil, nil, players[:first_player][:mark], nil, nil, nil, nil, nil])
   end
 
   it "alternates player that starts game" do
@@ -92,8 +79,8 @@ RSpec.describe Game do
     ui = double("ui")
     current_player = double("player")
     expect(current_player).to receive(:make_move).with("X", grid) {"3"}
-    players = {:first_player => {:player => current_player, :mark => "X"},
-     :second_player => {:player => "computer", :mark => "O"}}
+    players = {:first_player => {:player => current_player, :mark => Marks::X},
+               :second_player => {:player => "computer", :mark => Marks::O}}
     game.make_move(current_player, players, grid)
     current_player = players[:first_player][:player]
     ui = Ui.new(input, output)

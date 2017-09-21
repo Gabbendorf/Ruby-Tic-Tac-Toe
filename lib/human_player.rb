@@ -10,4 +10,8 @@ class HumanPlayer
     @ui.ask_for_move(grid, player_mark)
   end
 
+  def grid_size
+   @ui.choose_grid_size 
+  end
+
 end

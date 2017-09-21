@@ -31,4 +31,18 @@ RSpec.describe HumanPlayer do
     expect(second_valid_move).to eq("4")
   end
 
+  it "returns size for grid" do
+    ui = Ui.new(StringIO.new("4"), output)
+    human_player = HumanPlayer.new(ui)
+    
+    expect(human_player.grid_size).to eq(4)  
+  end
+  
+  it "repeats grid size until it is valid" do
+    ui = Ui.new(StringIO.new("8\n4"), output)
+    human_player = HumanPlayer.new(ui)    
+    
+    expect(human_player.grid_size).to eq(4)  
+  end
+
 end

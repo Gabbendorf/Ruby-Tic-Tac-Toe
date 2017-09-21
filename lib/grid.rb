@@ -7,20 +7,12 @@ attr_reader :size, :cells
     @cells = create_cells
   end
 
-  def grid_display
-    top_lines = prepare_grid[0..-2].map do |line|
-                  line.map {|number| number.center(5)}.join("|")
-                end
-    last_line = prepare_grid[-1].map {|number| number.center(5)}.join("|")
-    top_lines.join(underline) + underline + last_line
-  end
-
   def place_mark(chosen_position, mark)
-    @cells[corresponding_cell_for(chosen_position)] = mark
+    cells[corresponding_cell_for(chosen_position)] = mark
   end
 
   def empty_position?(grid_position)
-    @cells[corresponding_cell_for(grid_position)] == nil
+    cells[corresponding_cell_for(grid_position)] == nil
   end
 
   def grid_numbers
@@ -44,23 +36,30 @@ attr_reader :size, :cells
   end
 
   def duplicate_grid
-    grid_copy = Grid.new(@size)
-    grid_copy.instance_variable_set(:@cells, @cells.dup)
+    grid_copy = Grid.new(size)
+    grid_copy.instance_variable_set(:@cells, cells.dup)
     grid_copy
   end
 
   def different_cell_position(grid_copy_cells)
-    @cells.zip(grid_copy_cells).select.find_index do |grid_cell, copy_cell|
+    cells.zip(grid_copy_cells).select.find_index do |grid_cell, copy_cell|
        grid_cell != copy_cell
      end
   end
 
-  def empty_cells_count
-    @cells.count {|cell| cell == nil}
-  end
-
   def initial_state?
     empty_cells_count == grid_dimension
+  end
+
+  def create_copies_with_possible_moves(player_mark)
+    position = 1
+    copies_of_grid.each do |duplicated_grid|
+      while !duplicated_grid.empty_position?(position)
+        position += 1
+      end
+      duplicated_grid.place_mark(position, player_mark)
+      position += 1
+    end
   end
 
   private
@@ -70,13 +69,7 @@ attr_reader :size, :cells
   end
 
   def grid_dimension
-    @size * @size
-  end
-
-  def prepare_grid
-    filled_cells = @cells.map.with_index { |cell, index| cell.nil? ?
-                      grid_numbers[index] : cell }
-    filled_cells.each_slice(@size).to_a
+    size * size
   end
 
   def all_rows
@@ -84,7 +77,7 @@ attr_reader :size, :cells
   end
 
   def horizontal_rows
-    @cells.map.each_slice(@size).to_a
+    cells.map.each_slice(size).to_a
   end
 
   def vertical_rows
@@ -123,7 +116,7 @@ attr_reader :size, :cells
 
   def second_diagonal_row
     second_diagonal_row = []
-    index = @size - 1
+    index = size - 1
     horizontal_rows.each do |row|
       second_diagonal_row.push(row[index])
       index -= 1
@@ -131,12 +124,12 @@ attr_reader :size, :cells
     second_diagonal_row
   end
 
-  def underline
-    if @size == 3
-      "\n  _____________\n"
-    else
-      "\n _____________________\n"
-    end
+  def copies_of_grid
+   empty_cells_count.times.map {duplicate_grid}
+  end
+
+  def empty_cells_count
+    cells.count {|cell| cell == nil}
   end
 
 end
