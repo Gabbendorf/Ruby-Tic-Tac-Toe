@@ -11,5 +11,4 @@ RSpec.describe Marks do
     expect(Marks.switch_mark("X")).to eq("O")
   end
 
-
 end
